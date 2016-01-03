@@ -17,13 +17,12 @@ function SpriteRenderer(go,options) {
 }
 
 SpriteRenderer.prototype.update = function () {
-
     this.tickCount += 1;
 
     if (this.tickCount > this.ticksPerFrame) {
 
         this.tickCount = 0;
-    
+
             // If the current frame index is in range
             if (this.frameIndex < this.numberOfFrames - 1) {  
                 // Go to the next frame
@@ -31,11 +30,10 @@ SpriteRenderer.prototype.update = function () {
             } else {
                 this.frameIndex = 0;
             }
-    }
-};
+        }
+    };
 
 SpriteRenderer.prototype.render = function () {
-
   // Draw the animation
   this.context.drawImage(
     this.image,

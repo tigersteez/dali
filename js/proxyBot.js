@@ -15,8 +15,8 @@ function ProxyController(go,dx,dy) {
 }
 
 ProxyController.prototype.update = function () {
-    var newx = this.gameObj.transform.position.x +
-      this.dx * this.gameObj.canvas.deltaTime;
+  var newx = this.gameObj.transform.position.x +
+  this.dx * this.gameObj.canvas.deltaTime;
 
     // var top = newy - this.radius;
     // var bottom = newy + this.radius;
@@ -29,9 +29,9 @@ ProxyController.prototype.update = function () {
     } else {
       this.dx = -this.dx;
     }
-}
+  }
 
-ProxyController.prototype.readHID = function () {
+  ProxyController.prototype.readHID = function () {
     if (this.gameObj.canvas.pressed[LEFT]) {
       this.dx = -max_dx;
     } 
@@ -39,27 +39,27 @@ ProxyController.prototype.readHID = function () {
     if (this.gameObj.canvas.pressed[RIGHT]) {
       this.dx = max_dx;
     }
-}
+  }
 
-ProxyController.prototype.resetSpeeds = function () {
-  this.dx = 0;
-  this.dy = 0;
-}
+  ProxyController.prototype.resetSpeeds = function () {
+    this.dx = 0;
+    this.dy = 0;
+  }
 
-extend(GameComponent, ProxyController);
+  extend(GameComponent, ProxyController);
 
 // ProxyBot
 // ------------------------------------------------------------------------------------
 function ProxyBot(x,y,canvas) {
   GameObject.call(this,x,y,canvas);
   this.renderer = new SpriteRenderer(this,{
-      context: this.canvas.ctx,
-      width: SPRITE_WIDTH,
-      height: SPRITE_HEIGHT,
-      image: spriteImg,
-      numberOfFrames: NUM_SPRITES,
-      ticksPerFrame: 1
-    });
+    context: this.canvas.ctx,
+    width: SPRITE_WIDTH,
+    height: SPRITE_HEIGHT,
+    image: spriteImg,
+    numberOfFrames: NUM_SPRITES,
+    ticksPerFrame: 1
+  });
   this.renderer.scaleRatio = SPRITE_SCALE;
   this.transform.scale.x = this.renderer.scaleRatio;
   this.transform.scale.y = this.renderer.scaleRatio; 
