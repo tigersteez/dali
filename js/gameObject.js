@@ -10,8 +10,8 @@ function extend(base, sub) {
   var origProto = sub.prototype;
   sub.prototype = Object.create(base.prototype);
   for (var key in origProto)  {
-     sub.prototype[key] = origProto[key];
-  }
+   sub.prototype[key] = origProto[key];
+ }
   // Remember the constructor property was set wrong, let's fix it
   sub.prototype.constructor = sub;
   // In ECMAScript5+ (all modern browsers), you can make the constructor property
@@ -54,13 +54,13 @@ function Vector (x,y) {
 
 // http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
 function randomString(len, charSet) {
-    charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var randomString = '';
-    for (var i = 0; i < len; i++) {
-      var randomPoz = Math.floor(Math.random() * charSet.length);
-      randomString += charSet.substring(randomPoz,randomPoz+1);
-    }
-    return randomString;
+  charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var randomString = '';
+  for (var i = 0; i < len; i++) {
+    var randomPoz = Math.floor(Math.random() * charSet.length);
+    randomString += charSet.substring(randomPoz,randomPoz+1);
+  }
+  return randomString;
 }
 
 var MY_UNIQUE_ID = randomString(25);
@@ -77,35 +77,34 @@ function GameObject (x,y,canvas) {
 }
 
 GameObject.prototype.update = function () {
-    for (var i in this.gameComponents) {
-      if (this.gameComponents[i] instanceof GameComponent) {
-        this.gameComponents[i].update();
-      }
+  for (var i in this.gameComponents) {
+    if (this.gameComponents[i] instanceof GameComponent) {
+      this.gameComponents[i].update();
     }
-  };
+  }
+};
 
 GameObject.prototype.draw = function () {
-    for (var i in this.gameComponents) {
-      if (this.gameComponents[i] instanceof GameComponent) {
-        this.gameComponents[i].draw();
-      }
+  for (var i in this.gameComponents) {
+    if (this.gameComponents[i] instanceof GameComponent) {
+      this.gameComponents[i].draw();
     }
-  };
+  }
+};
 
 GameObject.prototype.readHID = function () {
-    for (var i in this.gameComponents) {
-      if (this.gameComponents[i] instanceof GameComponent) {
-        this.gameComponents[i].readHID();
-      }
+  for (var i in this.gameComponents) {
+    if (this.gameComponents[i] instanceof GameComponent) {
+      this.gameComponents[i].readHID();
     }
-  };
+  }
+};
 
 GameObject.prototype.getX = function () {
-    return this.transform.position.x;
-  };
+  return this.transform.position.x;
+};
 
 
 GameObject.prototype.getY = function () {
-    return this.transform.position.y;
-  };
-
+  return this.transform.position.y;
+};
