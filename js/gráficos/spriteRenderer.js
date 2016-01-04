@@ -9,6 +9,7 @@ function SpriteRenderer(go,options) {
     this.ticksPerFrame = options.ticksPerFrame || 0;
     this.spriteMap = options.spriteMap;
     this.numberOfFrames = options.numFrames || 1;
+    this.scaleRatio = options.scaleRatio || 1;
 }
 
 SpriteRenderer.prototype.update = function () {
@@ -37,7 +38,9 @@ SpriteRenderer.prototype.getMapIndices = function () {
 
 SpriteRenderer.prototype.draw = function() {
     var indices = this.getMapIndices();
-    this.spriteMap.draw(this.gameObj.getX(),this.gameObj.getY(),indices[0],indices[1]);
+    this.spriteMap.draw(this.gameObj.getX(),this.gameObj.getY(), // x,y
+        indices[0],indices[1], // i,j
+        this.scaleRatio); // scale
 }
 
 extend(GameComponent, SpriteRenderer);

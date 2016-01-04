@@ -7,7 +7,6 @@ const NUM_SPRITES = 8;
 const SPRITE_SCALE = 0.1;
 
 var spriteMap = new SpriteMap({
-    scaleRatio: SPRITE_SCALE,
     width: SPRITE_WIDTH,
     height: SPRITE_HEIGHT,
     image: spriteImg,
@@ -63,12 +62,13 @@ ProxyController.prototype.update = function () {
 function ProxyBot(x,y) {
   GameObject.call(this,x,y);
   this.renderer = new SpriteRenderer(this,{
+    scaleRatio: SPRITE_SCALE,
     spriteMap: spriteMap,
     numFrames: NUM_SPRITES,
     ticksPerFrame: 1
   });
-  this.transform.scale.x = this.renderer.spriteMap.scaleRatio;
-  this.transform.scale.y = this.renderer.spriteMap.scaleRatio; 
+  this.transform.scale.x = this.renderer.scaleRatio;
+  this.transform.scale.y = this.renderer.scaleRatio; 
   this.gameComponents.push(new ProxyController(this,0,0));
   this.gameComponents.push(this.renderer);
 }

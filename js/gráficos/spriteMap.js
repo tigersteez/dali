@@ -9,21 +9,12 @@ function SpriteMap(options) {
   this.width = options.width;
   this.height = options.height;
   this.image = options.image;
-  this.scaleRatio = options.scaleRatio || 1;
 
   this.spriteWidth = this.width / this.numCols;
   this.spriteHeight = this.height / this.numRows;
 }
 
-SpriteMap.prototype.getScaledWidth = function () {
-  return this.spriteWidth * this.scaleRatio;
-};
-
-SpriteMap.prototype.getScaledHeight = function () {
-  return this.spriteHeight * this.scaleRatio;
-};
-
-SpriteMap.prototype.render = function (i,j) {
+SpriteMap.prototype.render = function (i,j,scaleRatio) {
   // Draw the corresponding sprite
   dalí.ctx.drawImage(
     this.image,
@@ -33,16 +24,16 @@ SpriteMap.prototype.render = function (i,j) {
     this.spriteHeight,
     0,
     0,
-    this.getScaledWidth(),
-    this.getScaledHeight()
+    this.spriteWidth * scaleRatio,
+    this.spriteHeight * scaleRatio
   );
 };
 
-SpriteMap.prototype.draw = function(x,y,i,j) {
+SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio) {
   dalí.ctx.save();
   // top left corner
-  dalí.ctx.translate(x - this.getScaledWidth() / 2,
-    y - this.getScaledHeight() / 2);
-  this.render(i,j);
+  dalí.ctx.translate(x - this.spriteWidth * scaleRatio / 2,
+    y - this.spriteHeight * scaleRatio / 2);
+  this.render(i,j,scaleRatio);
   dalí.ctx.restore();
 };
