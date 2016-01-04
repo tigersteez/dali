@@ -7,13 +7,8 @@ function SpriteRenderer(go,options) {
     this.frameIndex = 0;
     this.tickCount = 0;
     this.ticksPerFrame = options.ticksPerFrame || 0;
-    this.numberOfFrames = options.numberOfFrames || 1;
-    
-    this.context = options.context;
-    this.width = options.width;
-    this.height = options.height;
-    this.image = options.image;
-    this.scaleRatio = 1;
+    this.spriteMap = options.spriteMap;
+    this.numberOfFrames = options.numFrames || 1;
 }
 
 SpriteRenderer.prototype.update = function () {
@@ -33,31 +28,16 @@ SpriteRenderer.prototype.update = function () {
         }
     };
 
-SpriteRenderer.prototype.render = function () {
-  // Draw the animation
-  this.context.save();
-  this.context.translate(this.gameObj.transform.position.x - (this.width / (2*this.numberOfFrames)) * this.scaleRatio,
-    this.gameObj.transform.position.y - (this.height / 2) * this.scaleRatio);
-  this.context.drawImage(
-    this.image,
-    this.frameIndex * this.width / this.numberOfFrames,
-    0,
-    this.width / this.numberOfFrames,
-    this.height,
-    0, // top left corner
-    0,
-    this.width / this.numberOfFrames * this.scaleRatio,
-    this.height * this.scaleRatio);
-
-  this.context.restore();
-};
-
-SpriteRenderer.prototype.getFrameWidth = function () {
-  return this.width / this.numberOfFrames;
-};
+SpriteRenderer.prototype.getMapIndices = function () {
+    var indices = new Array();
+    indices.push(Math.floor(this.frameIndex / this.spriteMap.numCols));
+    indices.push(this.frameIndex % this.spriteMap.numCols);
+    return indices;
+}
 
 SpriteRenderer.prototype.draw = function() {
-    this.render();
+    var indices = this.getMapIndices();
+    this.spriteMap.draw(this.gameObj.getX(),this.gameObj.getY(),indices[0],indices[1]);
 }
 
 extend(GameComponent, SpriteRenderer);
