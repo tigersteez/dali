@@ -1,3 +1,5 @@
+// http://jlongster.com/Making-Sprite-based-Games-with-Canvas
+
 function ResourceManager() {}
 
 function ImageLoader() {

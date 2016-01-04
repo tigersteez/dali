@@ -1,7 +1,3 @@
-function SpriteMap(options) {
-
-}
-
 // SpriteRenderer
 // adapted from:
 //    http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
