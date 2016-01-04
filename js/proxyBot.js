@@ -16,7 +16,7 @@ function ProxyController(go,dx,dy) {
 
 ProxyController.prototype.update = function () {
   var newx = this.gameObj.transform.position.x +
-  this.dx * this.gameObj.canvas.deltaTime;
+  this.dx * dalí.time.getDeltaTime();
 
     // var top = newy - this.radius;
     // var bottom = newy + this.radius;
@@ -24,7 +24,7 @@ ProxyController.prototype.update = function () {
     var left = newx - (SPRITE_WIDTH / (2*NUM_SPRITES)) * this.gameObj.transform.scale.x;
     var right = newx + (SPRITE_WIDTH / (2*NUM_SPRITES)) * this.gameObj.transform.scale.x;
 
-    if (!(left < 0 || right > this.gameObj.canvas.width)) {
+    if (!(left < 0 || right > dalí.canvas.width)) {
       this.gameObj.transform.position.x = newx;
     } else {
       this.dx = -this.dx;
@@ -32,11 +32,11 @@ ProxyController.prototype.update = function () {
   }
 
   ProxyController.prototype.readHID = function () {
-    if (this.gameObj.canvas.pressed[LEFT]) {
+    if (dalí.input.getKey(dalí.input.LEFT)) {
       this.dx = -max_dx;
     } 
 
-    if (this.gameObj.canvas.pressed[RIGHT]) {
+    if (dalí.input.getKey(dalí.input.RIGHT)) {
       this.dx = max_dx;
     }
   }
@@ -50,10 +50,10 @@ ProxyController.prototype.update = function () {
 
 // ProxyBot
 // ------------------------------------------------------------------------------------
-function ProxyBot(x,y,canvas) {
-  GameObject.call(this,x,y,canvas);
+function ProxyBot(x,y) {
+  GameObject.call(this,x,y);
   this.renderer = new SpriteRenderer(this,{
-    context: this.canvas.ctx,
+    context: dalí.ctx,
     width: SPRITE_WIDTH,
     height: SPRITE_HEIGHT,
     image: spriteImg,

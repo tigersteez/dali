@@ -1,3 +1,7 @@
+function SpriteMap(options) {
+
+}
+
 // SpriteRenderer
 // adapted from:
 //    http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
@@ -35,16 +39,21 @@ SpriteRenderer.prototype.update = function () {
 
 SpriteRenderer.prototype.render = function () {
   // Draw the animation
+  this.context.save();
+  this.context.translate(this.gameObj.transform.position.x - (this.width / (2*this.numberOfFrames)) * this.scaleRatio,
+    this.gameObj.transform.position.y - (this.height / 2) * this.scaleRatio);
   this.context.drawImage(
     this.image,
     this.frameIndex * this.width / this.numberOfFrames,
     0,
     this.width / this.numberOfFrames,
     this.height,
-    this.gameObj.transform.position.x - (this.width / (2*this.numberOfFrames)) * this.scaleRatio, // top left corner
-    this.gameObj.transform.position.y - (this.height / 2) * this.scaleRatio,
+    0, // top left corner
+    0,
     this.width / this.numberOfFrames * this.scaleRatio,
     this.height * this.scaleRatio);
+
+  this.context.restore();
 };
 
 SpriteRenderer.prototype.getFrameWidth = function () {

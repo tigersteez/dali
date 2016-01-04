@@ -22,15 +22,6 @@ function extend(base, sub) {
   });
 }
 
-// Arrow keycodes for all modern browsers and other consts
-// -------------------------------------------------------------------------------
-const LEFT = 37;
-const UP = 38;
-const RIGHT = 39;
-const DOWN = 40;
-const Q = 81;
-
-
 // GameComponent
 // -------------------------------------------------------------------------------
 function GameComponent (go) {
@@ -63,10 +54,10 @@ function randomString(len, charSet) {
   return randomString;
 }
 
+// Client unique string
 var MY_UNIQUE_ID = randomString(25);
 
-function GameObject (x,y,canvas) {
-  this.canvas = canvas;
+function GameObject (x,y) {
   this.GUID = this.constructor.name + ":" + MY_UNIQUE_ID + ":" + randomString(7);
   this.gameComponents = new Array();
   this.transform = {
@@ -77,27 +68,33 @@ function GameObject (x,y,canvas) {
 }
 
 GameObject.prototype.update = function () {
-  for (var i in this.gameComponents) {
-    if (this.gameComponents[i] instanceof GameComponent) {
-      this.gameComponents[i].update();
+  this.gameComponents.forEach(
+    function(component) {
+      if (component instanceof GameComponent) {
+        component.update();
+      }
     }
-  }
+  );
 };
 
 GameObject.prototype.draw = function () {
-  for (var i in this.gameComponents) {
-    if (this.gameComponents[i] instanceof GameComponent) {
-      this.gameComponents[i].draw();
+  this.gameComponents.forEach(
+    function(component) {
+      if (component instanceof GameComponent) {
+        component.draw();
+      }
     }
-  }
+  );
 };
 
 GameObject.prototype.readHID = function () {
-  for (var i in this.gameComponents) {
-    if (this.gameComponents[i] instanceof GameComponent) {
-      this.gameComponents[i].readHID();
+  this.gameComponents.forEach(
+    function(component) {
+      if (component instanceof GameComponent) {
+        component.readHID();
+      }
     }
-  }
+  );
 };
 
 GameObject.prototype.getX = function () {

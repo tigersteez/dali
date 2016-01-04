@@ -6,6 +6,7 @@
 // requestAnimationFrame polyfill by Erik Möller
 // fixes from Paul Irish and Tino Zijdel
 
+// (function (){ ...code }()); is a trick to create a private scope for the variables within
 (function() {
     var lastTime = 0;
     var vendors = ['ms', 'moz', 'webkit', 'o', ''];
@@ -31,82 +32,51 @@
         };
 }());
 
-// Setup canvas with extra properties
-// ------------------------------------------------------------------------
-
-var canvas = document.getElementById("myCanvas");
-canvas.ctx = canvas.getContext("2d");
-
-canvas.pressed = new Object(); // Using object like a dictionary
-
-canvas.pressed[LEFT] = false;
-canvas.pressed[RIGHT] = false;
-canvas.pressed[UP] = false;
-canvas.pressed[DOWN] = false;
-canvas.pressed[Q] = false;
-
-document.onkeydown = function (event) { // like addEventListener
-  canvas.pressed[event.keyCode] = true;
-}
-
-document.onkeyup = function (event) {
-  canvas.pressed[event.keyCode] = false;
-}
-
-canvas.timer = null;
-canvas.deltaTime = 0.0;
-
-function getDeltaTime() {
-    var now = Date.now();
-    canvas.deltaTime = ( now - (canvas.timer || now) ) / 1000.0;
- 
-    canvas.timer = now;
-}
-
 // The game setup
 // ------------------------------------------------------------------------
 
-const x = canvas.width/2;
-const y = canvas.height-30;
-
-var quitState = 0;
-
-//var blue = new Ball(x,y,canvas,"#0095DD",10,0,0);
-var red = new Ball(50,50,canvas,"#FF0000",5,max_dx,max_dy);
-
-var test = new ProxyBot(100,100,canvas);
+//var blue = new Ball(canvas.width/2,canvas.height-30,dalí,"#0095DD",10,0,0);
+var red = new Ball(50,50,"#FF0000",5,max_dx,max_dy);
+var test = new ProxyBot(100,100);
 
 // check generated GUID's
 //console.log(blue.GUID);
 console.log(test.GUID);
 console.log(red.GUID);
 
-function gameOver() {
-    alert("GAME OVER");
-    document.location.reload();
-}
+(function () {
+    var quitState = 0;
 
-function checkQuit() {
-   if (canvas.pressed[Q]) {
-        if (quitState == 0) {
-            quitState = 1;
-        }
-   } else {
-        if (quitState == 1) {
-            quitState = 2;
-        }
-   }
+    function gameOver() {
+        alert("GAME OVER");
+        document.location.reload();
+    }
 
-   if (quitState == 2) {
-        quitState = 0;
-        gameOver();
-   }
-}
+    function checkQuit() {
+        if (dalí.input.getKey(dalí.input.Q)) {
+            if (quitState == 0) {
+                quitState = 1;
+            }
+        } else {
+            if (quitState == 1) {
+                quitState = 2;
+            }
+        }
+
+        if (quitState == 2) {
+            quitState = 0;
+            gameOver();
+        }
+    }
+
+    window.checkQuit = checkQuit;
+}());
+
 
 function readHID() {
-   test.readHID(); 
-
-   checkQuit();
+    checkQuit();
+    test.readHID();
+    red.readHID();
 }
 
 function drawGame() {
@@ -124,10 +94,10 @@ function drawGame() {
 }
 
 function gameLoop() {
-    window.requestAnimationFrame(gameLoop);
-    canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    requestAnimationFrame(gameLoop);
+    dalí.ctx.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
     readHID();
-    getDeltaTime();
+    dalí.time.updateDeltaTime();
     drawGame();
 }
 
