@@ -16,7 +16,7 @@ function SpriteMap(options) {
 
 SpriteMap.prototype.render = function (i,j,scaleRatio) {
   // Draw the corresponding sprite
-  dalí.ctx.drawImage(
+  dalí.fg.drawImage(
     this.image,
     j * this.spriteWidth, // column
     i * this.spriteHeight, // row
@@ -30,10 +30,19 @@ SpriteMap.prototype.render = function (i,j,scaleRatio) {
 };
 
 SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio) {
-  dalí.ctx.save();
+  dalí.fg.save();
   // top left corner
-  dalí.ctx.translate(x - this.spriteWidth * scaleRatio / 2,
-    y - this.spriteHeight * scaleRatio / 2);
+  dalí.fg.translate(x,y);
   this.render(i,j,scaleRatio);
-  dalí.ctx.restore();
+  dalí.fg.restore();
+
+    // Corner check
+    // dalí.fg.beginPath();
+    // dalí.fg.arc(x + 1, 
+    //   y + 1, 
+    //   1, 
+    //   0, Math.PI*2);
+    // dalí.fg.fillStyle = "#000000";
+    // dalí.fg.fill();
+    // dalí.fg.closePath();
 };

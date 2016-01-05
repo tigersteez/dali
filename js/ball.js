@@ -12,12 +12,24 @@ function BallComponent(go,color,radius,dx,dy) {
 }
 
 BallComponent.prototype.draw = function () {
-    dalí.ctx.beginPath();
-    dalí.ctx.arc(this.gameObj.getX(), this.gameObj.getY(), 
-      this.gameObj.transform.scale.x * this.radius, 0, Math.PI*2);
-    dalí.ctx.fillStyle = this.fillColor;
-    dalí.ctx.fill();
-    dalí.ctx.closePath();
+    dalí.fg.beginPath();
+    dalí.fg.arc(this.gameObj.getX() + this.gameObj.transform.scale.x * this.radius, 
+      this.gameObj.getY() + this.gameObj.transform.scale.y * this.radius, 
+      this.gameObj.transform.scale.x * this.radius, 
+      0, Math.PI*2);
+    dalí.fg.fillStyle = this.fillColor;
+    dalí.fg.fill();
+    dalí.fg.closePath();
+
+    // Corner check
+    // dalí.fg.beginPath();
+    // dalí.fg.arc(this.gameObj.getX() + 1, 
+    //   this.gameObj.getY() + 1, 
+    //   1, 
+    //   0, Math.PI*2);
+    // dalí.fg.fillStyle = "#000000";
+    // dalí.fg.fill();
+    // dalí.fg.closePath();
 }
 
 BallComponent.prototype.update = function () {
@@ -26,11 +38,11 @@ BallComponent.prototype.update = function () {
     var newy = this.gameObj.transform.position.y +
      this.dy * dalí.time.getDeltaTime();
 
-    var top = newy - this.radius;
-    var bottom = newy + this.radius;
+    var top = newy;
+    var bottom = newy + 2*this.radius;
 
-    var left = newx - this.radius;
-    var right = newx + this.radius;
+    var left = newx;
+    var right = newx + 2*this.radius;
 
     if (!(left < 0 || right > dalí.canvas.width)) {
       this.gameObj.transform.position.x = newx;

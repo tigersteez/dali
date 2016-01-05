@@ -30,8 +30,8 @@ ProxyController.prototype.update = function () {
     // var top = newy - this.radius;
     // var bottom = newy + this.radius;
 
-    var left = newx - (SPRITE_WIDTH / (2*NUM_SPRITES)) * this.gameObj.transform.scale.x;
-    var right = newx + (SPRITE_WIDTH / (2*NUM_SPRITES)) * this.gameObj.transform.scale.x;
+    var left = newx;
+    var right = newx + (SPRITE_WIDTH / (NUM_SPRITES)) * this.gameObj.transform.scale.x;
 
     if (!(left < 0 || right > dalí.canvas.width)) {
       this.gameObj.transform.position.x = newx;

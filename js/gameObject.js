@@ -105,3 +105,13 @@ GameObject.prototype.getX = function () {
 GameObject.prototype.getY = function () {
   return this.transform.position.y;
 };
+
+GameObject.prototype.getCollider = function () {
+  // TODO
+};
+
+GameObject.prototype.getRenderer = function () {
+ // TODO
+};
+
+

@@ -2,7 +2,14 @@
 var dalí = {};
 
 dalí.canvas = document.getElementById("myCanvas");
-dalí.ctx = dalí.canvas.getContext("2d");
+dalí.main = dalí.canvas.getContext("2d");
+
+var canvas = document.createElement("canvas");
+canvas.width = dalí.canvas.width;
+canvas.height = dalí.canvas.height;
+
+dalí.fg = canvas.getContext("2d");
+
 
 // Time singleton 
 // -------------------------------------------------------

@@ -30,16 +30,16 @@ SpriteRenderer.prototype.update = function () {
     };
 
 SpriteRenderer.prototype.getMapIndices = function () {
-    var indices = new Array();
-    indices.push(Math.floor(this.frameIndex / this.spriteMap.numCols));
-    indices.push(this.frameIndex % this.spriteMap.numCols);
-    return indices;
+    return {
+        i: Math.floor(this.frameIndex / this.spriteMap.numCols),
+        j: this.frameIndex % this.spriteMap.numCols
+    };
 }
 
 SpriteRenderer.prototype.draw = function() {
-    var indices = this.getMapIndices();
+    var idx = this.getMapIndices();
     this.spriteMap.draw(this.gameObj.getX(),this.gameObj.getY(), // x,y
-        indices[0],indices[1], // i,j
+        idx.i, idx.j, // i,j
         this.scaleRatio); // scale
 }
 
