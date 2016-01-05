@@ -28,3 +28,11 @@ console.log(testObj.getX());
 testObj.printEventTypes();
 testObj.printGUID();
 testObj.printMyGUID();
+
+if (testObj instanceof GameObject) {
+  console.log("GameObject");
+}
+
+if (testObj instanceof EventHandler) {
+  console.log("EventHandler");
+}

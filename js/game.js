@@ -20,7 +20,7 @@ console.log(red.GUID);
     }
 
     function checkQuit() {
-        if (dalí.input.getKey(dalí.input.Q)) {
+        if (dalí.input.keys.isDown('Q')) {
             if (quitState == 0) {
                 quitState = 1;
             }

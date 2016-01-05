@@ -59,3 +59,10 @@ function FontMap(options) {
 }
 
 dalí.extend(SpriteMap,FontMap);
+
+
+// Texture
+// ------------------------------------------------------------------------------------------
+function Texture(img) {
+
+}

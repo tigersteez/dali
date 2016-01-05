@@ -30,9 +30,33 @@ dalí.fg = canvas.getContext("2d");
         return MY_UNIQUE_ID;
     }
 
+    function generateObjID(obj) {
+        return obj.constructor.name + "::" + 
+          dalí.identifier.getClientID() + "::" + 
+            dalí.identifier.randomString(7);
+    }
+
+    function generateComponentID(component) {
+      return component.gameObj.GUID + "::" +
+        component.constructor.name + "::" +
+          dalí.identifier.randomString(4);
+    }
+
+    function getClassFromID(guid) {
+      return guid.split("::")[0];
+    }
+
+    function getGUIDFromCompID(id) {
+      return id.split("::").splice(0,3).join("::");
+    }
+
     window.dalí.identifier = {
       randomString: randomString,
-      getClientID: getClientID
+      getClientID: getClientID,
+      generateObjID: generateObjID,
+      generateComponentID: generateComponentID,
+      getClassFromID: getClassFromID,
+      getGUIDFromCompID: getGUIDFromCompID
     };
 
 }());

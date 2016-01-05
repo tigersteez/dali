@@ -1,52 +1,55 @@
 // Input singleton
+// courtesy of: http://jlongster.com/Making-Sprite-based-Games-with-Canvas
+// will alter to support other inputs and input remapping
 // -------------------------------------------------------------------------------
-(function () {
-  var keys = {};
-  // TODO: touch controls
-  // TODO: mouse controls
+(function() {
+    var pressedKeys = {};
 
-  function addKey (keyCode) {
-    keys[keyCode] = false;
-  }
+    function setKey(event, status) {
+        var code = event.keyCode;
+        var key;
 
-  function needKey (keyCode) {
-    return typeof keys[keyCode] === 'undefined';
-  }
+        switch(code) {
+        case 32:
+            key = 'SPACE'; break;
+        case 37:
+            key = 'LEFT'; break;
+        case 38:
+            key = 'UP'; break;
+        case 39:
+            key = 'RIGHT'; break;
+        case 40:
+            key = 'DOWN'; break;
+        default:
+            // Convert ASCII codes to letters
+            key = String.fromCharCode(code);
+        }
 
-  var getKey = function(keyCode) {
-    if (needKey(keyCode)) {
-      addKey(keyCode);
+        pressedKeys[key] = status;
     }
-    return keys[keyCode];
-  }
 
-  var keyPressed = function (keyCode) {
-    keys[keyCode] = true;
-  }
+    document.addEventListener('keydown', function(e) {
+        setKey(e, true);
+    });
 
-  var keyReleased = function (keyCode) {
-    addKey(keyCode);
-  }
+    document.addEventListener('keyup', function(e) {
+        setKey(e, false);
+    });
 
-  // init singleton
-  window.dalí.input = {
-    getKey: getKey,
-    keyPressed: keyPressed,
-    keyReleased: keyReleased
-  };
-} ());
+    window.addEventListener('blur', function() {
+        pressedKeys = {};
+    });
 
-// Arrow keycodes for all modern browsers and other consts
-dalí.input.LEFT = 37;
-dalí.input.UP = 38;
-dalí.input.RIGHT = 39;
-dalí.input.DOWN = 40;
-dalí.input.Q = 81;
+    // init singleton
+    window.dalí.input = {
+        keys: {
+          isDown: function(key) {
+            return pressedKeys[key.toUpperCase()];
+          }
+        }
+    };
 
-document.addEventListener("keydown", function (event) {
-  dalí.input.keyPressed(event.keyCode);
-});
+    // TODO: mouse
+    // TODO: touch
 
-document.addEventListener("keyup", function (event) {
-  dalí.input.keyReleased(event.keyCode);
-});
+})();

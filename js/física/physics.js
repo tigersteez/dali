@@ -1,25 +1,41 @@
 dalí.physics = {};
 
+dalí.physics.collisionEvent = "gamecollision";
+
 dalí.physics.raiseCollision = function(collisionData) {
   document.dispatchEvent(
-    new CustomEvent("gamecollision",{ detail: collisionData })
+    new CustomEvent(dalí.physics.collisionEvent,{ detail: collisionData })
   );
 };
 
-dalí.physics.resolveCollision = function(c1,c2){
-  // do nothing for now
+dalí.physics.resolveCollision = function(c1,c2,collisionData) {
+  if (c1 instanceof Collider || c2 instanceof Collider) {
+    var collider = null, mover = null;
+    if (c1 instanceof Collider) {
+      collider = c1;
+      mover = c2;
+    } else {
+      collider = c2;
+      mover = c1;
+    }
+    // TODO: resolve mover/collider collision
+  } else { // both are Movers
+    // TODO: resolve mover/mover collision
+  }
 };
 
 dalí.physics.testForCollision = function(c1, c2) {
   if (dalí.physics.isPixelCollision(c1.imgData, c1.gameObj.getX(), c1.gameObj.getY(),
    c2.imgData, c2.gameObj.getX(), c2.gameObj.getY())) {
-    dalí.physics.raiseCollision({
+    var collisionData = {
+      eventType: dalí.physics.collisionEvent,
       GUID1: c1.GUID,
-      GUID2: c2.GUID
-    });
+      GUID2: c2.GUID,
+    };
     if (c1.isSolid && c2.isSolid) {
-      dalí.physics.resolveCollision(c1,c2);
+      dalí.physics.resolveCollision(c1,c2,collisionData);
     }
+    dalí.physics.raiseCollision(collisionData);
   }
 };
 
@@ -34,14 +50,21 @@ dalí.physics.checkCollisions = function(room) {
 
     for (var ii = 0; ii < room.colliders.length; ii++) {
       dalí.physics.testForCollision(room.getMover(room.movers[i]),
-        room.objects[room.colliders[ii]].getCollider());
+        room.getCollider(room.colliders[ii]));
     }
   }
 };
 
-document.addEventListener("gamecollision", function (event) {
+document.addEventListener(dalí.physics.collisionEvent, function (event) {
   var data = event.detail;
-  document.write("<p>Collision between " + data.GUID1 + " and " + data.GUID2 +"</p>");
+  dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" +
+   data.GUID1, data);
+  dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" + 
+    dalí.identifier.getGUIDFromCompID(data.GUID1), data);
+  dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" + 
+    data.GUID2, data);
+  dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" + 
+    dalí.identifier.getGUIDFromCompID(data.GUID2), data);
 });
 
 /**
@@ -54,7 +77,6 @@ document.addEventListener("gamecollision", function (event) {
  * @param other An ImageData object from the second image involved in the collision check.
  * @param x2 The x location of 'other'.
  * @param y2 The y location of 'other'.
- * @param isCentred True if the locations refer to the centre of 'first' and 'other', false to specify the top left corner.
  */
 dalí.physics.isPixelCollision = function(first, x, y, other, x2, y2) {
     if (first !== null && other !== null) {

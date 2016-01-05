@@ -20,9 +20,7 @@ Vector.add = function(vect,otherVect) {
 // -------------------------------------------------------------------------------
 function GameObject (x,y) {
   // generate globally unique id for instance
-  this.GUID = this.constructor.name + "::" + 
-    dalí.identifier.getClientID() + "::" + 
-    dalí.identifier.randomString(7);
+  this.GUID = dalí.identifier.generateObjID(this);
 
   this.gameComponents = new Array();
   this.transform = {
@@ -72,9 +70,7 @@ Player.prototype.readHID = function () {
 // -------------------------------------------------------------------------------
 function GameComponent (go) {
   this.gameObj = go;
-  this.GUID = this.gameObj.GUID + "::" +
-    this.constructor.name + "::" +
-    dalí.identifier.randomString(4);
+  this.GUID = dalí.identifier.generateComponentID(this)
 }
 
 GameComponent.prototype.update = function () {};
