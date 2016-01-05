@@ -32,4 +32,4 @@ Animation.prototype.getMapIndices = function() {
     };
 }
 
-extend(SpriteRenderer, Animation);
+dalí.extend(SpriteRenderer, Animation);

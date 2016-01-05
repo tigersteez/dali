@@ -1,3 +1,5 @@
+// Renderer
+// ------------------------------------------------------------------------------------------
 function Renderer(go,options) {
     GameComponent.call(this,go);
     this.width = options.width || 1;
@@ -17,7 +19,7 @@ Renderer.prototype.draw = function() {
 
 Renderer.prototype.render = function () {};
 
-extend(GameComponent, Renderer);
+dalí.extend(GameComponent, Renderer);
 
 GameObject.prototype.getRenderer = function () {
   for (var i in this.gameComponents) {
@@ -63,7 +65,7 @@ SpriteRenderer.prototype.render = function () {
         this.scaleRatio); // scale
 };
 
-extend(Renderer, SpriteRenderer);
+dalí.extend(Renderer, SpriteRenderer);
 
 // ParticleRenderer
 // -------------------------------------------------------------------
@@ -93,4 +95,4 @@ ParticleRenderer.prototype.render = function () {
     dalí.main.closePath();
 }
 
-extend(Renderer, ParticleRenderer);
+dalí.extend(Renderer, ParticleRenderer);

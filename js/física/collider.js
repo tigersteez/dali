@@ -1,10 +1,12 @@
+// Collider
+// -------------------------------------------------------------------------------
 function Collider(go,isSolid) {
   GameComponent.call(this,go);
   this.imgData = null;
   this.isSolid = isSolid;
 } 
 
-extend(GameComponent,Collider);
+dalí.extend(GameComponent,Collider);
 
 GameObject.prototype.getCollider = function () {
   for (var i in this.gameComponents) {
@@ -15,7 +17,8 @@ GameObject.prototype.getCollider = function () {
   return null;
 };
 
-
+// Mover
+// -------------------------------------------------------------------------------
 function Mover(go,isSolid,vx,vy,ax,ay) {
   Collider.call(this,go);
   this.velocity = new Vector(vx || 0, vy || 0);
@@ -42,4 +45,4 @@ Mover.prototype.reset = function () {
   this.resetAccs();
 }
 
-extend(Collider,Mover);
+dalí.extend(Collider,Mover);

@@ -37,7 +37,7 @@ ProxyController.prototype.readHID = function () {
     }
 };
 
-extend(GameComponent, ProxyController);
+dalí.extend(GameComponent, ProxyController);
 
 // ProxyBot
 // ------------------------------------------------------------------------------------
@@ -54,4 +54,4 @@ function ProxyBot(x,y) {
   this.gameComponents.push(this.renderer);
 }
 
-extend(Player, ProxyBot);
+dalí.extend(Player, ProxyBot);

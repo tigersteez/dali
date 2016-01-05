@@ -59,7 +59,7 @@ BallComponent.prototype.resetSpeeds = function () {
   this.dy = 0;
 }
 
-extend(GameComponent, BallComponent);
+dalí.extend(GameComponent, BallComponent);
 
 // Ball
 // ------------------------------------------------------------------------------------
@@ -74,4 +74,4 @@ function Ball(x,y,color,radius,dx,dy) {
   this.gameComponents.push(new Collider(this,true));
 }
 
-extend(Player, Ball);
+dalí.extend(Player, Ball);

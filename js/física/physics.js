@@ -1,9 +1,5 @@
 dalí.physics = {};
 
-dalí.physics.checkCollisions = function(room) {
-
-};
-
 dalí.physics.raiseCollision = function(collisionData) {
 
 };
@@ -20,3 +16,6 @@ dalí.physics.checkAndHandleCollision = function() {
 
 };
 
+dalí.physics.checkCollisions = function(room) {
+
+};
