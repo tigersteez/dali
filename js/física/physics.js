@@ -58,7 +58,6 @@ document.addEventListener("gamecollision", function (event) {
  */
 dalí.physics.isPixelCollision = function(first, x, y, other, x2, y2) {
     if (first !== null && other !== null) {
-      console.log("Testing...");
       // we need to avoid using floats, as were doing array lookups
       x  = Math.round( x );
       y  = Math.round( y );
