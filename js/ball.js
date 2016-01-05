@@ -11,27 +11,6 @@ function BallComponent(go,color,radius,dx,dy) {
   this.dy = dy;
 }
 
-BallComponent.prototype.draw = function () {
-    dalí.fg.beginPath();
-    dalí.fg.arc(this.gameObj.getX() + this.gameObj.transform.scale.x * this.radius, 
-      this.gameObj.getY() + this.gameObj.transform.scale.y * this.radius, 
-      this.gameObj.transform.scale.x * this.radius, 
-      0, Math.PI*2);
-    dalí.fg.fillStyle = this.fillColor;
-    dalí.fg.fill();
-    dalí.fg.closePath();
-
-    // Corner check
-    // dalí.fg.beginPath();
-    // dalí.fg.arc(this.gameObj.getX() + 1, 
-    //   this.gameObj.getY() + 1, 
-    //   1, 
-    //   0, Math.PI*2);
-    // dalí.fg.fillStyle = "#000000";
-    // dalí.fg.fill();
-    // dalí.fg.closePath();
-}
-
 BallComponent.prototype.update = function () {
     var newx = this.gameObj.transform.position.x +
      this.dx * dalí.time.getDeltaTime();
@@ -85,8 +64,14 @@ extend(GameComponent, BallComponent);
 // Ball
 // ------------------------------------------------------------------------------------
 function Ball(x,y,color,radius,dx,dy) {
-  GameObject.call(this,x,y);
+  Player.call(this,x,y);
+  this.gameComponents.push(new ParticleRenderer(this,{
+    width: 10,
+    height: 10,
+    color: "#000000"
+  }));
   this.gameComponents.push(new BallComponent(this,color,radius,dx,dy));
+  this.gameComponents.push(new Collider(this,true));
 }
 
-extend(GameObject, Ball);
+extend(Player, Ball);

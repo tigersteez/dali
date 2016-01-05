@@ -17,60 +17,41 @@ var spriteMap = new SpriteMap({
 
 // ProxyController
 // ------------------------------------------------------------------------------------
-function ProxyController(go,dx,dy) {
+function ProxyController(go) {
   GameComponent.call(this,go);
-  this.dx = dx;
-  this.dy = dy;
 }
 
 ProxyController.prototype.update = function () {
-  var newx = this.gameObj.transform.position.x +
-  this.dx * dalí.time.getDeltaTime();
+  this.gameObj.getCollider().reset();
+};
 
-    // var top = newy - this.radius;
-    // var bottom = newy + this.radius;
+ProxyController.prototype.readHID = function () {
+    var mover = this.gameObj.getCollider();
 
-    var left = newx;
-    var right = newx + (SPRITE_WIDTH / (NUM_SPRITES)) * this.gameObj.transform.scale.x;
-
-    if (!(left < 0 || right > dalí.canvas.width)) {
-      this.gameObj.transform.position.x = newx;
-    } else {
-      this.dx = -this.dx;
-    }
-  }
-
-  ProxyController.prototype.readHID = function () {
     if (dalí.input.getKey(dalí.input.LEFT)) {
-      this.dx = -max_dx;
+      mover.velocity.x = -max_dx;
     } 
 
     if (dalí.input.getKey(dalí.input.RIGHT)) {
-      this.dx = max_dx;
+      mover.velocity.x = max_dx;
     }
-  }
+};
 
-  ProxyController.prototype.resetSpeeds = function () {
-    this.dx = 0;
-    this.dy = 0;
-  }
-
-  extend(GameComponent, ProxyController);
+extend(GameComponent, ProxyController);
 
 // ProxyBot
 // ------------------------------------------------------------------------------------
 function ProxyBot(x,y) {
-  GameObject.call(this,x,y);
-  this.renderer = new SpriteRenderer(this,{
+  Player.call(this,x,y);
+  this.renderer = new Animation(this,{
     scaleRatio: SPRITE_SCALE,
     spriteMap: spriteMap,
     numFrames: NUM_SPRITES,
     ticksPerFrame: 1
   });
-  this.transform.scale.x = this.renderer.scaleRatio;
-  this.transform.scale.y = this.renderer.scaleRatio; 
-  this.gameComponents.push(new ProxyController(this,0,0));
+  this.gameComponents.push(new Mover(this,true));
+  this.gameComponents.push(new ProxyController(this));
   this.gameComponents.push(this.renderer);
 }
 
-extend(GameObject, ProxyBot);
+extend(Player, ProxyBot);

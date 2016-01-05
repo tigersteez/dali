@@ -35,12 +35,14 @@
 // The game setup
 // ------------------------------------------------------------------------
 
-//var blue = new Ball(canvas.width/2,canvas.height-30,dalí,"#0095DD",10,0,0);
 var red = new Ball(50,50,"#FF0000",5,max_dx,max_dy);
 var test = new ProxyBot(100,100);
 
+var room = new Room();
+room.addObject(red);
+room.addObject(test);
+
 // check generated GUID's
-//console.log(blue.GUID);
 console.log(test.GUID);
 console.log(red.GUID);
 
@@ -75,66 +77,28 @@ console.log(red.GUID);
 
 function readHID() {
     checkQuit();
-    test.readHID();
-    //red.readHID();
+    room.readHID();
 }
 
-var first = true
-
-function drawGame() {
-    red.update();
-    red.draw();
-
-    // blue.update();
-    // blue.draw();
-
-    test.update();
-    test.draw();
-
-    // if (first) {
-    //     var imgData = dalí.main.getImageData(0,0,10,10);
-    //     for (var i = 0; i < 10; i++) {
-    //         for (var j = 0; j < 10; j++) {
-    //             if (imgData.data[ (i + j*10)*4 + 3 ] == 0) {
-    //                 console.log("Black");
-    //             }
-    //         }
-    //     }
-    //     first = false;
-    // }
-
-    var fgData = dalí.fg.getImageData(0,0,dalí.canvas.width,dalí.canvas.height);
-    var bgData = dalí.main.getImageData(0,0,dalí.canvas.width,dalí.canvas.height);
-
-    var pixel = null;
-    for (var y = 0; y < dalí.canvas.height; y++) {
-        for (var x = 0; x < dalí.canvas.width; x++) {
-            pixel = (x + y*dalí.canvas.width)*4 + 3;
-            if (fgData.data[pixel] !== 0) {
-                bgData.data[pixel-3] = fgData.data[pixel - 3];
-                bgData.data[pixel-2] = fgData.data[pixel - 2];
-                bgData.data[pixel-1] = fgData.data[pixel - 1];
-                bgData.data[pixel] = fgData.data[pixel];
-            }
-        }
-    }
-
-    dalí.main.putImageData(bgData,0,0);
-
-    test.gameComponents[0].resetSpeeds();
-    //blue.gameComponents[0].resetSpeeds();
-}
-
-function gameLoop() {
-    requestAnimationFrame(gameLoop);
+function draw() {
     dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
     dalí.fg.clearRect(0,0, dalí.canvas.width, dalí.canvas.height);
     dalí.main.fillStyle = bgd;
     dalí.main.fillRect(0, 0, dalí.canvas.width, dalí.canvas.height);
-    drawGame();
-    readHID();
-    dalí.time.updateDeltaTime();
 
+    room.draw();
+}
+
+function update() {
+    dalí.time.updateDeltaTime();
+    room.update();
+}
+
+function gameLoop() {
+    requestAnimationFrame(gameLoop);
+    readHID();
+    update();
+    draw();
 }
 
 var backgroundImg = new Image();

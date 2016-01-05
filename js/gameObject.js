@@ -32,19 +32,29 @@ GameComponent.prototype.update = function () {};
 GameComponent.prototype.draw = function () {};
 GameComponent.prototype.readHID = function () {};
 
-
 // Vector
 // -------------------------------------------------------------------------------
 function Vector (x,y) {
-  this.x = x;
-  this.y = y;
+  this.x = x || 0;
+  this.y = y || 0;
+}
+
+Vector.mult = function(vect,constant) {
+  return new Vector(vect.x * constant, vect.y * constant);
+}
+
+Vector.add = function(vect,otherVect) {
+  var res = new Vector(vect.x, vect.y);
+  res.x += otherVect.x;
+  res.y += otherVect.y;
+  return res;
 }
 
 // GameObject
 // -------------------------------------------------------------------------------
 
 // http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
-function randomString(len, charSet) {
+dalí.randomString = function (len, charSet) {
   charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var randomString = '';
   for (var i = 0; i < len; i++) {
@@ -55,15 +65,14 @@ function randomString(len, charSet) {
 }
 
 // Client unique string
-var MY_UNIQUE_ID = randomString(25);
+dalí.MY_UNIQUE_ID = dalí.randomString(25);
 
 function GameObject (x,y) {
-  this.GUID = this.constructor.name + ":" + MY_UNIQUE_ID + ":" + randomString(7);
+  this.GUID = this.constructor.name + ":" + dalí.MY_UNIQUE_ID + ":" + dalí.randomString(7);
   this.gameComponents = new Array();
   this.transform = {
     position: new Vector(x,y),
-    rotation: 0,
-    scale: new Vector(1,1)
+    rotation: 0
   };
 }
 
@@ -72,26 +81,6 @@ GameObject.prototype.update = function () {
     function(component) {
       if (component instanceof GameComponent) {
         component.update();
-      }
-    }
-  );
-};
-
-GameObject.prototype.draw = function () {
-  this.gameComponents.forEach(
-    function(component) {
-      if (component instanceof GameComponent) {
-        component.draw();
-      }
-    }
-  );
-};
-
-GameObject.prototype.readHID = function () {
-  this.gameComponents.forEach(
-    function(component) {
-      if (component instanceof GameComponent) {
-        component.readHID();
       }
     }
   );
@@ -106,12 +95,21 @@ GameObject.prototype.getY = function () {
   return this.transform.position.y;
 };
 
-GameObject.prototype.getCollider = function () {
-  // TODO
+// Player
+// -------------------------------------------------------------------------------
+
+function Player(x,y) {
+  GameObject.call(this,x,y);
+}
+
+extend(GameObject, Player);
+
+Player.prototype.readHID = function () {
+  this.gameComponents.forEach(
+    function(component) {
+      if (component instanceof GameComponent) {
+        component.readHID();
+      }
+    }
+  );
 };
-
-GameObject.prototype.getRenderer = function () {
- // TODO
-};
-
-
