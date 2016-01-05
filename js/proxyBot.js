@@ -1,5 +1,5 @@
 var spriteImg = new Image();
-spriteImg.src = "./img/sprite_sheet.png";
+spriteImg.src = "./img/proxyBot.png";
 
 const SPRITE_WIDTH = 4096;
 const SPRITE_HEIGHT = 256;
@@ -43,15 +43,19 @@ dalí.extend(GameComponent, ProxyController);
 // ------------------------------------------------------------------------------------
 function ProxyBot(x,y) {
   Player.call(this,x,y);
-  this.renderer = new Animation(this,{
+  this.gameComponents.push(new Mover(this,true));
+  this.gameComponents.push(new ProxyController(this));
+  this.gameComponents.push(new Animation(this,{
     scaleRatio: SPRITE_SCALE,
     spriteMap: spriteMap,
     numFrames: NUM_SPRITES,
     ticksPerFrame: 1
-  });
-  this.gameComponents.push(new Mover(this,true));
-  this.gameComponents.push(new ProxyController(this));
-  this.gameComponents.push(this.renderer);
+  }));
+
+  // Component GUID check
+  // this.gameComponents.forEach(function (component) {
+  //   console.log(component.GUID);
+  // });
 }
 
 dalí.extend(Player, ProxyBot);

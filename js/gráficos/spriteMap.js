@@ -50,3 +50,12 @@ SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio) {
   dalí.fg.restore();
   dalí.main.restore();
 };
+
+
+// FontMap
+// ------------------------------------------------------------------------------------------
+function FontMap(options) {
+  SpriteMap.call(this,options);
+}
+
+dalí.extend(SpriteMap,FontMap);

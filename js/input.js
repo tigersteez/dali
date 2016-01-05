@@ -1,7 +1,7 @@
 // Input singleton
 // -------------------------------------------------------------------------------
 (function () {
-  var keys = new Object();
+  var keys = {};
   // TODO: touch controls
   // TODO: mouse controls
 

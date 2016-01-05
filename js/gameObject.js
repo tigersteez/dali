@@ -1,13 +1,3 @@
-// GameComponent
-// -------------------------------------------------------------------------------
-function GameComponent (go) {
-  this.gameObj = go;
-}
-
-GameComponent.prototype.update = function () {};
-GameComponent.prototype.draw = function () {};
-GameComponent.prototype.readHID = function () {};
-
 // Vector
 // -------------------------------------------------------------------------------
 function Vector (x,y) {
@@ -30,8 +20,8 @@ Vector.add = function(vect,otherVect) {
 // -------------------------------------------------------------------------------
 function GameObject (x,y) {
   // generate globally unique id for instance
-  this.GUID = this.constructor.name + ":" + 
-    dalí.identifier.getClientID() + ":" + 
+  this.GUID = this.constructor.name + "::" + 
+    dalí.identifier.getClientID() + "::" + 
     dalí.identifier.randomString(7);
 
   this.gameComponents = new Array();
@@ -77,3 +67,16 @@ Player.prototype.readHID = function () {
     }
   );
 };
+
+// GameComponent
+// -------------------------------------------------------------------------------
+function GameComponent (go) {
+  this.gameObj = go;
+  this.GUID = this.gameObj.GUID + "::" +
+    this.constructor.name + "::" +
+    dalí.identifier.randomString(4);
+}
+
+GameComponent.prototype.update = function () {};
+GameComponent.prototype.draw = function () {};
+GameComponent.prototype.readHID = function () {};

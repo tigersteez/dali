@@ -33,3 +33,17 @@ Animation.prototype.getMapIndices = function() {
 }
 
 dalí.extend(SpriteRenderer, Animation);
+
+// UI_Element
+// -------------------------------------------------------------------
+function UI_Element(go,options) {
+    SpriteRenderer.call(this,options);
+    this.font = this.spriteMap;
+}
+
+UI_Element.prototype.render = function () {
+    // TODO
+}
+
+dalí.extend(SpriteRenderer, UI_Element);
+

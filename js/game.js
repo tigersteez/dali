@@ -1,6 +1,5 @@
 // The game setup
 // ------------------------------------------------------------------------
-
 var red = new Ball(50,50,"#FF0000",5,max_dx,max_dy);
 var test = new ProxyBot(100,100);
 
@@ -58,6 +57,7 @@ function draw() {
 function update() {
     dalí.time.updateDeltaTime();
     room.update();
+    dalí.physics.checkCollisions(room);
 }
 
 function gameLoop() {

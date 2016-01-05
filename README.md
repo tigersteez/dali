@@ -15,3 +15,4 @@
 1. Getting Started --> https://developer.mozilla.org/en-US/docs/Games/Workflows/2D_Breakout_game_pure_JavaScript
 2. Sprite Renderer --> http://www.williammalone.com/articles/create-html5-canvas-javascript-sprite-animation/
 3. Resource Manager and other canvas tricks --> http://jlongster.com/Making-Sprite-based-Games-with-Canvas
+4. Per Pixel Collision Detection --> http://www.playmycode.com/blog/2011/08/javascript-per-pixel-html5-canvas-image-collision-detection/

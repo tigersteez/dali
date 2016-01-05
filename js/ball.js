@@ -3,10 +3,9 @@
 const max_dx = 100;
 const max_dy = 100;
 
-function BallComponent(go,color,radius,dx,dy) {
+function BallComponent(go,radius,dx,dy) {
   GameComponent.call(this,go);
   this.radius = radius;
-  this.fillColor = color;
   this.dx = dx;
   this.dy = dy;
 }
@@ -68,9 +67,9 @@ function Ball(x,y,color,radius,dx,dy) {
   this.gameComponents.push(new ParticleRenderer(this,{
     width: 10,
     height: 10,
-    color: "#000000"
+    color: color
   }));
-  this.gameComponents.push(new BallComponent(this,color,radius,dx,dy));
+  this.gameComponents.push(new BallComponent(this,radius,dx,dy));
   this.gameComponents.push(new Collider(this,true));
 }
 

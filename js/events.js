@@ -1,19 +1,18 @@
-// Should I use built in event manager.......?
-
-// EventManager
+// EventManager singleton
 // -------------------------------------------------------------------------------
-function EventManager() {
-  
-}
+(function () {
+  var handlers = {};
 
-// GameEvent
-// -------------------------------------------------------------------------------
-function GameEvent() {
-  
-}
+  window.dalí.events = {
+
+  };
+} ());
 
 // EventHandler
 // -------------------------------------------------------------------------------
+function EventHandler() {
+
+}
 
 // Timeline
 // -------------------------------------------------------------------------------
