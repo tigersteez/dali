@@ -2,12 +2,18 @@ dalí.physics = {};
 
 dalí.physics.collisionEvent = "gamecollision";
 
+/**
+ *
+ */
 dalí.physics.raiseCollision = function(collisionData) {
   document.dispatchEvent(
     new CustomEvent(dalí.physics.collisionEvent,{ detail: collisionData })
   );
 };
 
+/**
+ * 
+ */
 dalí.physics.testForCollision = function(c1, c2) {
   if (dalí.physics.isPixelCollision(c1.imgData, c1.gameObj.getX(), c1.gameObj.getY(),
    c2.imgData, c2.gameObj.getX(), c2.gameObj.getY())) {
@@ -24,6 +30,9 @@ dalí.physics.testForCollision = function(c1, c2) {
   }
 };
 
+/**
+ *
+ */
 dalí.physics.checkCollisions = function(room) {
   // For every mover, check for collision with remaining movers
   // and all (static) colliders.
@@ -40,6 +49,7 @@ dalí.physics.checkCollisions = function(room) {
   }
 };
 
+//
 document.addEventListener(dalí.physics.collisionEvent, function (event) {
   var data = event.detail;
   dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" +
@@ -52,6 +62,9 @@ document.addEventListener(dalí.physics.collisionEvent, function (event) {
     dalí.identifier.getGUIDFromCompID(data.GUID2), data);
 });
 
+/**
+ *
+ */
 dalí.physics.resolveCollision = function(c1,c2,collisionData) {
   var collider = null, mover = null;
   if (!(c1 instanceof Mover) || !(c2 instanceof Mover)) {

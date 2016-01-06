@@ -9,6 +9,17 @@ room.addObject(red);
 room.addObject(test);
 room.addObject(wall);
 
+var bgMusic = new Audio("./audio/MimicIntarstellar.wav");
+if (typeof bgMusic.loop === 'boolean') {
+    bgMusic.loop = true;
+} else {
+    bgMusic.addEventListener("ended", function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+}
+bgMusic.play();
+
 wall = new Wall(0,0,25,dalí.canvas.height);
 room.addObject(wall);
 

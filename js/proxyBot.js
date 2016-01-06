@@ -11,8 +11,7 @@ var spriteMap = new SpriteMap({
     height: SPRITE_HEIGHT,
     image: spriteImg,
     numFrames: NUM_SPRITES,
-    numCols: NUM_SPRITES,
-    ticksPerFrame: 1
+    numCols: NUM_SPRITES
 });
 
 // ProxyController

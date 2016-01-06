@@ -1,15 +1,30 @@
 const max_dx = 100;
 const max_dy = 100;
 
+ballImg = new Image();
+ballImg.src = "./img/blue_orb.png";
+
+const BALL_LENGTH = 216;
+const BALL_SCALE = 0.05;
+
+var ballMap = new SpriteMap({
+    width: BALL_LENGTH,
+    height: BALL_LENGTH,
+    image: ballImg,
+    numFrames: 1,
+    numCols: 1
+});
+
 // Ball
 // ------------------------------------------------------------------------------------
 function Ball(x,y,color,radius,dx,dy) {
   GameObject.call(this,x,y);
   EventHandler.call(this,[dalí.physics.collisionEvent],this.GUID);
-  this.gameComponents.push(new ParticleRenderer(this,{
-    width: radius*2,
-    height: radius*2,
-    color: color
+  this.gameComponents.push(new SpriteRenderer(this,{
+    width: BALL_LENGTH,
+    height: BALL_LENGTH,
+    scaleRatio: BALL_SCALE,
+    spriteMap: ballMap
   }));
   this.gameComponents.push(new Mover(this,true,dx,dy));
 }
