@@ -70,20 +70,23 @@ ProxyBot.prototype.ongamecollision = function(eventData) {
   // Collision test
   var collInfo = eventData.collInfo[this.getCollider().GUID];
   var otherGUID = null;
-  if (dalí.identifier.getGUIDFromCompID(eventData.GUID1) === this.GUID) {
+  if (dalí.identifier.getDataFromGUID(eventData.GUID1).getObjID().hashCode() === this.GUID.hashCode()) {
      otherGUID = eventData.GUID2; 
   } else {
     otherGUID = eventData.GUID1;
   }
 
-  if ("Wall" === dalí.identifier.getClassFromID(otherGUID)) {
+  var otherData = dalí.identifier.getDataFromGUID(otherGUID);
+  var myData = dalí.identifier.getDataFromGUID(this.GUID);
+
+  if ("Wall".hashCode() == otherData.objClass.hashCode()) {
     if (collInfo.left || collInfo.right) {
       this.getCollider().velocity.x = 0;
     }
   } else {
     score += 1;
-    var scoreString = "<p>Collisions between " + dalí.identifier.getClassFromID(eventData.GUID1) + " and " +
-      dalí.identifier.getClassFromID(eventData.GUID2) + ": " + score + "</p>";
+    var scoreString = "<p>Collisions between " + otherData.objClass + " and " +
+      myData.objClass + ": " + score + "</p>";
     console.log(scoreString); 
     scoreboard.innerHTML = scoreString;
   }

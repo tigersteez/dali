@@ -50,13 +50,40 @@ dalí.fg = canvas.getContext("2d");
       return id.split("::").splice(0,3).join("::");
     }
 
+    function GUIDData(GUID) {
+      var idParts = GUID.split("::");
+      this.objClass = idParts[0];
+      this.clientID = idParts[1];
+      this.objID = idParts[2];
+      if (idParts.length == 5) {
+        this.compClass = idParts[3];
+        this.compID = idParts[4];
+      } else {
+        this.compClass = null;
+        this.compID = null;
+      }
+    }
+
+    GUIDData.prototype.getObjID = function() {
+      return this.objClass + "::" + this.clientID + "::" + this.objID;
+    }
+
+    GUIDData.prototype.getCompID = function() {
+      if (this.compID !== null)
+        return this.getObjID() + "::" + this.compClass + "::" + this.compID;
+      return null;
+    }
+
+    function getDataFromGUID(GUID) {
+      return new GUIDData(GUID);
+    }
+
     window.dalí.identifier = {
       randomString: randomString,
       getClientID: getClientID,
       generateObjID: generateObjID,
       generateComponentID: generateComponentID,
-      getClassFromID: getClassFromID,
-      getGUIDFromCompID: getGUIDFromCompID
+      getDataFromGUID: getDataFromGUID
     };
 
 }());
@@ -142,3 +169,20 @@ dalí.extend = function(base, sub) {
             clearTimeout(id);
         };
 }());
+
+// Addition public functions for useful objects
+Array.prototype.contains = function(v) {
+  return this.indexOf(v) > -1;
+};
+
+// src: http://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript-jquery
+String.prototype.hashCode = function() {
+  var hash = 0, i, chr, len;
+  if (this.length === 0) return hash;
+  for (i = 0, len = this.length; i < len; i++) {
+    chr   = this.charCodeAt(i);
+    hash  = ((hash << 5) - hash) + chr;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};

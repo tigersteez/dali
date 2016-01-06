@@ -7,10 +7,6 @@ function Room() {
   this.players = [];
 }
 
-Array.prototype.contains = function(v) {
-  return this.indexOf(v) > -1;
-};
-
 Room.prototype.addObject = function(gameObj) {
   if (gameObj instanceof GameObject) {
     this.objects[gameObj.GUID] = gameObj;

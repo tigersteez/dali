@@ -52,14 +52,18 @@ dalí.physics.checkCollisions = function(room) {
 //
 document.addEventListener(dalí.physics.collisionEvent, function (event) {
   var data = event.detail;
+
+  var guidData1 = dalí.identifier.getDataFromGUID(data.GUID1);
+  var guidData2 = dalí.identifier.getDataFromGUID(data.GUID2);
+
   dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" +
    data.GUID1, data);
   dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" + 
-    dalí.identifier.getGUIDFromCompID(data.GUID1), data);
+    guidData1.getObjID(), data);
   dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" + 
     data.GUID2, data);
   dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" + 
-    dalí.identifier.getGUIDFromCompID(data.GUID2), data);
+    guidData2.getObjID(), data);
 });
 
 /**
