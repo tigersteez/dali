@@ -8,29 +8,14 @@ dalí.physics.raiseCollision = function(collisionData) {
   );
 };
 
-dalí.physics.resolveCollision = function(c1,c2,collisionData) {
-  if (c1 instanceof Collider || c2 instanceof Collider) {
-    var collider = null, mover = null;
-    if (c1 instanceof Collider) {
-      collider = c1;
-      mover = c2;
-    } else {
-      collider = c2;
-      mover = c1;
-    }
-    // TODO: resolve mover/collider collision
-  } else { // both are Movers
-    // TODO: resolve mover/mover collision
-  }
-};
-
 dalí.physics.testForCollision = function(c1, c2) {
   if (dalí.physics.isPixelCollision(c1.imgData, c1.gameObj.getX(), c1.gameObj.getY(),
-   c2.imgData, c2.gameObj.getX(), c2.gameObj.getY())) {
+   c2.imgData, c2.gameObj.getX(), c2.gameObj.getY()) {
     var collisionData = {
       eventType: dalí.physics.collisionEvent,
       GUID1: c1.GUID,
       GUID2: c2.GUID,
+      collInfo: {}
     };
     if (c1.isSolid && c2.isSolid) {
       dalí.physics.resolveCollision(c1,c2,collisionData);
@@ -66,6 +51,94 @@ document.addEventListener(dalí.physics.collisionEvent, function (event) {
   dalí.events.notifyHandler(dalí.physics.collisionEvent + "::" + 
     dalí.identifier.getGUIDFromCompID(data.GUID2), data);
 });
+
+dalí.physics.resolveCollision = function(c1,c2,collisionData) {
+  var collider = null, mover = null;
+  if (!(c1 instanceof Mover) || !(c2 instanceof Mover)) {
+    if (!(c1 instanceof Mover)) {
+      collider = c1;
+      mover = c2;
+    } else {
+      collider = c2;
+      mover = c1;
+    }
+  } else { // both are Movers
+    if ((c1.imgData.width * c1.imgData.height) < 
+      (c2.imgData.width * c2.imgData.height)) {
+      collider = c2;
+      mover = c1;
+    } else {
+      collider = c1;
+      mover = c2;
+    }
+  }
+
+  // resolve collision
+  var pos1 = mover.gameObj.transform.position;
+  var pos2 = collider.gameObj.transform.position;  
+
+  var slopeX = collider.imgData.height / collider.imgData.width;
+  var slopeY = 1 / slopeX;
+
+  var top = false, bottom = false, right = false, left = false;
+
+  if (mover.velocity.x < 0) {
+    // left
+    var h1 = (pos2.x + collider.imgData.width - pos1.x) * slopeX;
+    var h2 = pos2.y + h1;
+    h1 = pos2.y + collider.imgData.height - h1;
+    left = (pos1.x + mover.imgData.width > pos2.x + collider.imgData.width 
+      && (pos1.y >= h2 || pos1.y + mover.imgData.height <= h1));
+  } else {
+    // right
+    var h1 = ((pos1.x + mover.imgData.width) - pos2.x) * slopeX;
+    var h2 = pos2.y + h1;
+    h1 = pos2.y + collider.imgData.height - h1;
+    right = ( pos1.x < pos2.x && (pos1.y >= h2 || pos1.y + mover.imgData.height <= h1));
+  }
+
+  if (left) {
+    pos1.x = pos2.x + collider.imgData.width;
+  } else if (right) { 
+    pos1.x = pos2.x - mover.imgData.width;
+  }
+
+  if (mover.velocity.y < 0) {
+    // top
+    var w1 = (pos2.y + collider.imgData.height - pos1.y) * slopeY;
+    var w2 = pos2.x + collider.imgData.width - w1;
+    w1 = pos2.x + w1;
+    top = (pos1.y + mover.imgData.height > pos2.y + collider.imgData.height &&
+     (pos1.x >= w1 || pos1.x + mover.imgData.width <= w2));
+  } else {
+    // bottom
+    var w1 = (pos1.y + mover.imgData.height - pos2.y) * slopeY;
+    var w2 = pos2.x + collider.imgData.width - w1;
+    w1 = pos2.x + w1;
+    bottom = (pos1.y < pos2.y && (pos1.x >= w1 || pos1.x + mover.imgData.width <= w2));
+  }
+
+  if (top) {
+    pos1.y = pos2.y + collider.imgData.height;
+  } else if (bottom) {
+    pos1.y = pos2.y - mover.imgData.height;
+  }
+
+  collisionData.collInfo[mover.GUID] = {
+    top: top,
+    bottom: bottom,
+    left: left,
+    right: right
+  };
+  
+  collisionData.collInfo[collider.GUID] = {
+    top: bottom,
+    bottom: top,
+    left: right,
+    right: left
+  };
+
+};
 
 /**
  * src: http://www.playmycode.com/blog/2011/08/javascript-per-pixel-html5-canvas-image-collision-detection/

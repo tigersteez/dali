@@ -20,7 +20,7 @@ GameObject.prototype.getCollider = function () {
 // Mover
 // -------------------------------------------------------------------------------
 function Mover(go,isSolid,vx,vy,ax,ay) {
-  Collider.call(this,go);
+  Collider.call(this,go,isSolid);
   this.velocity = new Vector(vx || 0, vy || 0);
   this.acceler = new Vector(ax || 0, ay || 0);
 }

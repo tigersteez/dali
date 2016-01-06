@@ -45,6 +45,10 @@ function readHID() {
     room.readHID();
 }
 
+var backgroundImg = new Image();
+backgroundImg.src = "./img/brick.png";
+var bgd = null;
+
 function draw() {
     dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
     dalí.fg.clearRect(0,0, dalí.canvas.width, dalí.canvas.height);
@@ -67,9 +71,6 @@ function gameLoop() {
     draw();
 }
 
-var backgroundImg = new Image();
-backgroundImg.src = "./img/brick.png";
-var bgd = null;
 backgroundImg.onload = function () {
     bgd = dalí.main.createPattern(backgroundImg, 'repeat');
     gameLoop();

@@ -60,8 +60,15 @@ function ProxyBot(x,y) {
 }
 
 ProxyBot.prototype.ongamecollision = function(eventData) {
+  // Collision test
   console.log("Collision between " + dalí.identifier.getClassFromID(eventData.GUID1) + " and " +
     dalí.identifier.getClassFromID(eventData.GUID2));
+
+  var collInfo = eventData.collInfo[this.getCollider().GUID];
+  for (var key in collInfo) {
+    console.log(key + ": " + collInfo[key]);
+  }
+
 };
 
 dalí.extend(EventHandler, ProxyBot);

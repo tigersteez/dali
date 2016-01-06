@@ -45,8 +45,20 @@ function Ball(x,y,color,radius,dx,dy) {
 }
 
 Ball.prototype.ongamecollision = function(eventData) {
-  this.getCollider().velocity.x = -this.getCollider().velocity.x;
-  this.getCollider().velocity.y = -this.getCollider().velocity.y;
+  var mover = this.getCollider();
+  var collInfo = eventData.collInfo[mover.GUID];
+  if (collInfo.left && mover.velocity.x < 0) {
+    mover.velocity.x = -mover.velocity.x;
+  } else if (collInfo.right && mover.velocity.x > 0) {
+    mover.velocity.x = -mover.velocity.x;
+  }
+
+
+  if (collInfo.top && mover.velocity.y < 0) {
+    mover.velocity.y = -mover.velocity.y;
+  } else if (collInfo.bottom && mover.velocity.y > 0) {
+    mover.velocity.y = -mover.velocity.y;
+  }
 }
 
 dalí.extend(EventHandler, Ball);
