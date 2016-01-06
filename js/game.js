@@ -2,10 +2,21 @@
 // ------------------------------------------------------------------------
 var red = new Ball(50,50,"#FF0000",5,max_dx,max_dy);
 var test = new ProxyBot(100,100);
+var wall = new Wall(0,0,dalí.canvas.width,25);
 
 var room = new Room();
 room.addObject(red);
 room.addObject(test);
+room.addObject(wall);
+
+wall = new Wall(0,0,25,dalí.canvas.height);
+room.addObject(wall);
+
+wall = new Wall(0,dalí.canvas.height - 25,dalí.canvas.width,25);
+room.addObject(wall);
+
+wall = new Wall(dalí.canvas.width-25,0,25,dalí.canvas.height);
+room.addObject(wall);
 
 // check generated GUID's
 console.log(test.GUID);

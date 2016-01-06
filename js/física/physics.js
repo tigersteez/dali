@@ -82,14 +82,16 @@ dalí.physics.resolveCollision = function(c1,c2,collisionData) {
 
   var top = false, bottom = false, right = false, left = false;
 
-  if (mover.velocity.x < 0) {
+  if (mover.velocity.x <= 0) {
     // left
     var h1 = (pos2.x + collider.imgData.width - pos1.x) * slopeX;
     var h2 = pos2.y + h1;
     h1 = pos2.y + collider.imgData.height - h1;
     left = (pos1.x + mover.imgData.width > pos2.x + collider.imgData.width 
       && (pos1.y >= h2 || pos1.y + mover.imgData.height <= h1));
-  } else {
+  } 
+
+  if (mover.velocity.x >= 0) {
     // right
     var h1 = ((pos1.x + mover.imgData.width) - pos2.x) * slopeX;
     var h2 = pos2.y + h1;
@@ -103,14 +105,16 @@ dalí.physics.resolveCollision = function(c1,c2,collisionData) {
     pos1.x = pos2.x - mover.imgData.width;
   }
 
-  if (mover.velocity.y < 0) {
+  if (mover.velocity.y <= 0) {
     // top
     var w1 = (pos2.y + collider.imgData.height - pos1.y) * slopeY;
     var w2 = pos2.x + collider.imgData.width - w1;
     w1 = pos2.x + w1;
     top = (pos1.y + mover.imgData.height > pos2.y + collider.imgData.height &&
      (pos1.x >= w1 || pos1.x + mover.imgData.width <= w2));
-  } else {
+  }
+
+  if (mover.velocity.y >= 0) {
     // bottom
     var w1 = (pos1.y + mover.imgData.height - pos2.y) * slopeY;
     var w2 = pos2.x + collider.imgData.width - w1;

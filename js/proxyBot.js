@@ -61,14 +61,22 @@ function ProxyBot(x,y) {
 
 ProxyBot.prototype.ongamecollision = function(eventData) {
   // Collision test
-  console.log("Collision between " + dalí.identifier.getClassFromID(eventData.GUID1) + " and " +
-    dalí.identifier.getClassFromID(eventData.GUID2));
-
   var collInfo = eventData.collInfo[this.getCollider().GUID];
-  for (var key in collInfo) {
-    console.log(key + ": " + collInfo[key]);
+  var otherGUID = null;
+  if (dalí.identifier.getGUIDFromCompID(eventData.GUID1) === this.GUID) {
+     otherGUID = eventData.GUID2; 
+  } else {
+    otherGUID = eventData.GUID1;
   }
 
+  if ("Wall" === dalí.identifier.getClassFromID(otherGUID)) {
+    if (collInfo.left || collInfo.right) {
+      this.getCollider().velocity.x = 0;
+    }
+  }
+
+  console.log("Collision between " + dalí.identifier.getClassFromID(eventData.GUID1) + " and " +
+    dalí.identifier.getClassFromID(eventData.GUID2));
 };
 
 dalí.extend(EventHandler, ProxyBot);

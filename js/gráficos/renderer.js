@@ -96,3 +96,50 @@ ParticleRenderer.prototype.render = function () {
 }
 
 dalí.extend(Renderer, ParticleRenderer);
+
+// BoxRender
+// -------------------------------------------------------------------
+function BoxRenderer(go,options) {
+  Renderer.call(this,go,options);
+  this.borderThickness = options.borderThickness || 0;
+  this.fillColor = options.color;
+  this.borderColor = options.borderColor || "#000000";
+}
+
+BoxRenderer.prototype.render = function () {
+  dalí.fg.beginPath();
+  dalí.fg.fillStyle = this.fillColor;
+  dalí.fg.fillRect(this.gameObj.getX(),
+      this.gameObj.getY(), 
+      this.width,
+      this.height);
+
+  dalí.main.beginPath();
+  dalí.main.fillStyle = this.fillColor;
+  dalí.main.fillRect(this.gameObj.getX(),
+      this.gameObj.getY(), 
+      this.width,
+      this.height);
+
+  if (this.borderThickness != 0) { 
+    dalí.fg.strokeStyle = this.borderColor;
+    dalí.fg.lineWidth = this.borderThickness;
+    dalí.fg.strokeRect(this.gameObj.getX(),
+      this.gameObj.getY(), 
+      this.width,
+      this.height);
+
+    dalí.main.strokeStyle = this.borderColor;
+    dalí.main.lineWidth = this.borderThickness;
+    dalí.main.strokeRect(this.gameObj.getX(),
+      this.gameObj.getY(), 
+      this.width,
+      this.height);
+  }
+
+  dalí.fg.closePath();
+  dalí.main.closePath();
+};
+
+dalí.extend(Renderer, BoxRenderer);
+
