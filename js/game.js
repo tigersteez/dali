@@ -86,11 +86,16 @@ function update() {
     dalí.physics.checkCollisions(room);
 }
 
+var counter = 0;
+
 function gameLoop() {
-    requestAnimationFrame(gameLoop);
-    readHID();
-    update();
-    draw();
+    counter++;
+    if (counter > 1) {
+        requestAnimationFrame(gameLoop);
+        readHID();
+        update();
+        draw();
+    }
 }
 
 backgroundImg.onload = function () {

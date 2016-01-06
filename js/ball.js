@@ -46,6 +46,27 @@ Ball.prototype.ongamecollision = function(eventData) {
   }
 }
 
+// Test function
+// Mover.prototype.draw = function () {
+//     dalí.main.beginPath();
+//     dalí.main.arc(this.gameObj.getX(), 
+//       this.gameObj.getY(), 
+//       4, 
+//       0, Math.PI*2);
+//     dalí.main.fillStyle = "#eee";
+//     dalí.main.fill();
+//     dalí.main.closePath();
+
+//     dalí.main.beginPath();
+//     dalí.main.arc(this.gameObj.getX() + this.imgData.width, 
+//       this.gameObj.getY() + this.imgData.height, 
+//       4, 
+//       0, Math.PI*2);
+//     dalí.main.fillStyle = "#eee";
+//     dalí.main.fill();
+//     dalí.main.closePath();
+// };
+
 dalí.extend(EventHandler, Ball);
 dalí.extend(GameObject, Ball);
 

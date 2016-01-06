@@ -47,8 +47,8 @@ GameObject.prototype.draw = function () {
 function SpriteRenderer(go,options) {
     Renderer.call(this,go,options);
     this.spriteMap = options.spriteMap;
-    this.width = spriteMap.spriteWidth;
-    this.height = spriteMap.spriteHeight;
+    this.width = this.spriteMap.spriteWidth;
+    this.height = this.spriteMap.spriteHeight;
 }
 
 SpriteRenderer.prototype.getMapIndices = function () {

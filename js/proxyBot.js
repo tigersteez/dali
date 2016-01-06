@@ -58,6 +58,14 @@ function ProxyBot(x,y) {
   // });
 }
 
+var scoreboard = null;
+var score = 0;
+
+window.onload = function () {
+  scoreboard = document.getElementById("scoreboard");
+  gameLoop();
+};
+
 ProxyBot.prototype.ongamecollision = function(eventData) {
   // Collision test
   var collInfo = eventData.collInfo[this.getCollider().GUID];
@@ -72,10 +80,13 @@ ProxyBot.prototype.ongamecollision = function(eventData) {
     if (collInfo.left || collInfo.right) {
       this.getCollider().velocity.x = 0;
     }
+  } else {
+    score += 1;
+    var scoreString = "<p>Collisions between " + dalí.identifier.getClassFromID(eventData.GUID1) + " and " +
+      dalí.identifier.getClassFromID(eventData.GUID2) + ": " + score + "</p>";
+    console.log(scoreString); 
+    scoreboard.innerHTML = scoreString;
   }
-
-  console.log("Collision between " + dalí.identifier.getClassFromID(eventData.GUID1) + " and " +
-    dalí.identifier.getClassFromID(eventData.GUID2));
 };
 
 dalí.extend(EventHandler, ProxyBot);
