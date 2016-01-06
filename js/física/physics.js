@@ -10,7 +10,7 @@ dalí.physics.raiseCollision = function(collisionData) {
 
 dalí.physics.testForCollision = function(c1, c2) {
   if (dalí.physics.isPixelCollision(c1.imgData, c1.gameObj.getX(), c1.gameObj.getY(),
-   c2.imgData, c2.gameObj.getX(), c2.gameObj.getY()) {
+   c2.imgData, c2.gameObj.getX(), c2.gameObj.getY())) {
     var collisionData = {
       eventType: dalí.physics.collisionEvent,
       GUID1: c1.GUID,
