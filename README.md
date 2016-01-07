@@ -6,7 +6,8 @@
   
 **_Ball Game_**
 + Controls:
-  - Left and Right Arrow to move the "ProxyBot"
+  - Left, Right, Up, and Down Arrow to move the ProxyBot
+  - Avoid the Blue Orbs! You have 3 lives...
   - 'Q' to restart game
   
 ----
