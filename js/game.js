@@ -111,9 +111,11 @@ var counter = 0;
 function gameLoop() {
     counter++;
     if (counter > 2) {
+        dalí.events.emptyQueue();
         requestAnimationFrame(gameLoop);
         readHID();
         update();
+        dalí.events.emptyQueue();
         draw();
     }
 }
