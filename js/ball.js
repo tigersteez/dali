@@ -12,6 +12,26 @@ var ballMap = new SpriteMap({
     numCols: 1
 });
 
+var canPlay = false;
+
+var bounceSound = new Audio("./audio/whoosh.wav");
+// if (typeof bounceSound.loop === 'boolean') {
+//     bounceSound.loop = true;
+// } else {
+//     bounceSound.addEventListener("ended", function() {
+//         this.currentTime = 0;
+//         this.play();
+//     }, false);
+// }
+
+bounceSound.loop = false;
+bounceSound.addEventListener('canplaythrough', function() { 
+   canPlay = true;
+   scoreboard.innerHTML = "Noise ready";
+}, false);
+
+var scoreboard = document.getElementById("scoreboard");
+
 // Ball
 // ------------------------------------------------------------------------------------
 function Ball(x,y,color,radius,dx,dy) {
@@ -27,6 +47,7 @@ function Ball(x,y,color,radius,dx,dy) {
 }
 
 Ball.prototype.ongamecollision = function(eventData) {
+
   var mover = this.getCollider();
   var collInfo = eventData.collInfo[mover.GUID];
   if (collInfo.left && mover.velocity.x < 0) {
@@ -41,6 +62,7 @@ Ball.prototype.ongamecollision = function(eventData) {
   } else if (collInfo.bottom && mover.velocity.y > 0) {
     mover.velocity.y = -mover.velocity.y;
   }
+
 }
 
 // Test function

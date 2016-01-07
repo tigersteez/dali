@@ -139,6 +139,13 @@ ProxyBot.prototype.ongamecollision = function(eventData) {
     console.log(scoreString); 
     // scoreboard.innerHTML = scoreString;
     this.health.dec();
+
+    scoreboard.innerHTML = "<p>Collided</p>";
+    if (canPlay) {
+      scoreboard.innerHTML += "<p>Played noise!</p>";
+      bounceSound.play();
+    }
+    
   }
 };
 

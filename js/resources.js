@@ -129,7 +129,8 @@ function AudioLoader() {}
       }
     }
   }
-
+  // These each should be instances of  ResourceManager which
+  // has several resource loaders
   window.dalí.resources = {
     preloaders: {},
     gameloaders: {},

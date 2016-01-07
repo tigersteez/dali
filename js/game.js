@@ -150,7 +150,7 @@ function gameLoop() {
 //     gameLoop();
 // };
 
-var bgMusic = new Audio("./audio/MimicIntarstellar.wav");
+var bgMusic = new Audio("./audio/med.wav");
 if (typeof bgMusic.loop === 'boolean') {
     bgMusic.loop = true;
 } else {
