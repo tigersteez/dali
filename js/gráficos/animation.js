@@ -26,11 +26,8 @@ Animation.prototype.update = function () {
 };
 
 Animation.prototype.getMapIndices = function() {
-    return {
-        i: Math.floor(this.frameIndex / this.spriteMap.numCols),
-        j: this.frameIndex % this.spriteMap.numCols
-    };
-}
+    return this.spriteMap.getMapIndices(this.frameIndex);
+};
 
 dalí.extend(SpriteRenderer, Animation);
 

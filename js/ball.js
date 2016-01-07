@@ -75,11 +75,11 @@ dalí.extend(GameObject, Ball);
 function Wall(x,y,width,height) {
   GameObject.call(this,x,y);
   this.gameComponents.push(
-    new BoxRenderer(this,{
+    new TextureRenderer(this,{
       width: width,
       height: height,
-      color: "#000",
-      borderThickness: 0
+      isBackground: false,
+      texture: brick
     })
   );
   this.gameComponents.push(new Collider(this,true));

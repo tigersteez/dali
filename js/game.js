@@ -5,20 +5,23 @@ var test = new ProxyBot(100,100);
 var wall = new Wall(0,0,dalí.canvas.width,25);
 
 var room = new Room();
+
+var bgObj = new GameObject(0,0);
+
+var bgTexture = new TextureRenderer(bgObj,{
+    texture: stone,
+    width: dalí.canvas.width,
+    height: dalí.canvas.height,
+    isBackground: true
+});
+
+bgObj.gameComponents.push(bgTexture);
+room.addObject(bgObj);
+
+
 room.addObject(red);
 room.addObject(test);
 room.addObject(wall);
-
-var bgMusic = new Audio("./audio/MimicIntarstellar.wav");
-if (typeof bgMusic.loop === 'boolean') {
-    bgMusic.loop = true;
-} else {
-    bgMusic.addEventListener("ended", function() {
-        this.currentTime = 0;
-        this.play();
-    }, false);
-}
-bgMusic.play();
 
 wall = new Wall(0,0,25,dalí.canvas.height);
 room.addObject(wall);
@@ -28,6 +31,30 @@ room.addObject(wall);
 
 wall = new Wall(dalí.canvas.width-25,0,25,dalí.canvas.height);
 room.addObject(wall);
+
+// Font test
+// src: https://github.com/mihaip/web-experiments/blob/master/canvas-text/font.png
+var fontImg = new Image();
+fontImg.src = "./img/font.png";
+
+var font = new FontMap({
+    width: 512,
+    height: 512,
+    image: fontImg,
+    numFrames: 256,
+    numCols: 16,
+    numRows: 16
+});
+
+var text = new GameObject(5,5);
+text.gameComponents.push(new TextRenderer(text,{
+    font: font,
+    text: "Ball Game!",
+    desiredLength: 200
+}));
+
+room.addObject(text);
+
 
 // check generated GUID's
 console.log(test.GUID);
@@ -67,16 +94,9 @@ function readHID() {
     room.readHID();
 }
 
-var backgroundImg = new Image();
-backgroundImg.src = "./img/brick.png";
-var bgd = null;
-
 function draw() {
     dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
     dalí.fg.clearRect(0,0, dalí.canvas.width, dalí.canvas.height);
-    dalí.main.fillStyle = bgd;
-    dalí.main.fillRect(0, 0, dalí.canvas.width, dalí.canvas.height);
-
     room.draw();
 }
 
@@ -90,7 +110,7 @@ var counter = 0;
 
 function gameLoop() {
     counter++;
-    if (counter > 1) {
+    if (counter > 2) {
         requestAnimationFrame(gameLoop);
         readHID();
         update();
@@ -98,9 +118,24 @@ function gameLoop() {
     }
 }
 
-backgroundImg.onload = function () {
-    bgd = dalí.main.createPattern(backgroundImg, 'repeat');
-    gameLoop();
-};
+// var backgroundImg = new Image();
+// backgroundImg.src = "./img/brick.png";
+// var bgd = null;
+
+// backgroundImg.onload = function () {
+//     bgd = dalí.main.createPattern(backgroundImg, 'repeat');
+//     gameLoop();
+// };
+
+var bgMusic = new Audio("./audio/MimicIntarstellar.wav");
+if (typeof bgMusic.loop === 'boolean') {
+    bgMusic.loop = true;
+} else {
+    bgMusic.addEventListener("ended", function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
+}
+bgMusic.play();
 
 

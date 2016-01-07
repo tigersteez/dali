@@ -51,18 +51,56 @@ SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio) {
   dalí.main.restore();
 };
 
+SpriteMap.prototype.getMapIndices = function(frameIdx) {
+    return {
+        i: Math.floor(frameIdx / this.numCols),
+        j: frameIdx % this.numCols
+    };
+};
+
 
 // FontMap
 // ------------------------------------------------------------------------------------------
 function FontMap(options) {
   SpriteMap.call(this,options);
+  this.mapCharToIdx = options.mapCharToIdx || function (char) {
+    return char.charCodeAt(0);
+  };
 }
+
+FontMap.prototype.draw = function (x,y,char,scaleRatio) {
+  var ij = this.getMapIndices(this.mapCharToIdx(char));
+  SpriteMap.prototype.draw.call(this,x,y,ij.i,ij.j,scaleRatio);
+};
 
 dalí.extend(SpriteMap,FontMap);
 
 
 // Texture
 // ------------------------------------------------------------------------------------------
-function Texture(img) {
+function Texture(imgurl) {
+  this.img = new Image();
+  this.img.src = imgurl;
+  this.img.myTexture = this;
+  this.texture = null;
 
+  this.img.onload = function () {
+    this.myTexture.texture = dalí.main.createPattern(this, 'repeat');
+    gameLoop();
+  };
 }
+
+Texture.prototype.render = function(x,y,w,h,isBackground) {
+    dalí.main.fillStyle = this.texture;
+    dalí.main.fillRect(x, y, w, h);
+
+    if (!isBackground) {
+      dalí.fg.fillStyle = this.texture;
+      dalí.fg.fillRect(x, y, w, h);
+    }
+};
+
+var stone = new Texture("./img/stone_texture.png");
+
+var brick = new Texture("./img/brick.png");
+

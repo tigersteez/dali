@@ -143,3 +143,49 @@ BoxRenderer.prototype.render = function () {
 
 dalí.extend(Renderer, BoxRenderer);
 
+// TextRenderer
+// -------------------------------------------------------------------
+function TextRenderer(go,options) {
+  Renderer.call(this,go,options);
+  this.font = options.font;
+  this.text = options.text;
+  this.setDesiredLength(options.desiredLength);
+  this.width = this.font.spriteWidth;
+  this.height = this.font.spriteHeight;
+};
+
+TextRenderer.prototype.render = function () {
+    for (var i = 0; i < this.text.length; i++) {
+        this.font.draw(this.gameObj.getX() + this.font.spriteWidth * this.scaleRatio * i, // x
+          this.gameObj.getY(), // y
+          this.text.charAt(i), // i,j
+          this.scaleRatio); // scale
+    }
+
+};
+
+TextRenderer.prototype.setText = function(text,dl) {
+  this.text = text;
+  this.setDesiredLength(dl);
+};
+
+TextRenderer.prototype.setDesiredLength = function(dl) {
+  this.scaleRatio = dl / (this.font.spriteWidth * this.text.length);
+}
+
+dalí.extend(Renderer, TextRenderer);
+
+// TextureRenderer
+// -------------------------------------------------------------------
+function TextureRenderer(go,options) {
+  Renderer.call(this,go,options);
+  this.texture = options.texture;
+  this.isBackground = options.isBackground || true;
+}
+
+TextureRenderer.prototype.render = function() {
+  this.texture.render(this.gameObj.getX(), this.gameObj.getY(), 
+    this.width * this.scaleRatio, this.height * this.scaleRatio, this.isBackground);
+};
+
+dalí.extend(Renderer, TextureRenderer);

@@ -89,6 +89,7 @@ ProxyBot.prototype.ongamecollision = function(eventData) {
       myData.objClass + ": " + score + "</p>";
     console.log(scoreString); 
     scoreboard.innerHTML = scoreString;
+    text.getRenderer().setText(score.toString(),50);
   }
 };
 
