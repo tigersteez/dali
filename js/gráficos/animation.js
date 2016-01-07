@@ -33,14 +33,19 @@ dalí.extend(SpriteRenderer, Animation);
 
 // UI_Element
 // -------------------------------------------------------------------
-function UI_Element(go,options) {
-    SpriteRenderer.call(this,options);
-    this.font = this.spriteMap;
+function UI_Element(x,y,options) {
+    GameObject.call(this,x,y);
+    this.x0 = this.transform.position.x;
+    this.y0 = this.transform.position.y;
 }
 
-UI_Element.prototype.render = function () {
-    // TODO
-}
+UI_Element.prototype.draw = function () {
+    for (var i =0; i < this.gameComponents.length; i++) {
+        this.gameComponents[i].draw();
+        this.transform.position.x += this.gameComponents[i].width * this.gameComponents[i].scaleRatio;
+    }
+    this.transform.position.x = this.x0;
+};
 
-dalí.extend(SpriteRenderer, UI_Element);
+dalí.extend(GameObject, UI_Element);
 

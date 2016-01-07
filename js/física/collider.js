@@ -33,11 +33,13 @@ Mover.prototype.update = function () {
 }
 
 Mover.prototype.resetSpeeds = function () {
-  this.velocity = new Vector();
+  this.velocity.x = 0;
+  this.velocity.y = 0; 
 }
 
 Mover.prototype.resetAccs = function () {
-  this.acceler = new Vector();
+  this.acceler.x = 0;
+  this.acceler.y = 0; 
 }
 
 Mover.prototype.reset = function () {

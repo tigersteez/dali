@@ -26,6 +26,7 @@ ImageLoader.prototype._load = function (url) {
         return this.resourceCache[url];
     }
     else {
+      // Resource loader, make "virtual" loadResource(url) function
         var img = new Image();
         img.loader = this;
         img.onload = function() {

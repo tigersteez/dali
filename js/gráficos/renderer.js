@@ -150,7 +150,7 @@ function TextRenderer(go,options) {
   this.font = options.font;
   this.text = options.text;
   this.setDesiredLength(options.desiredLength);
-  this.width = this.font.spriteWidth;
+  this.width = this.font.spriteWidth * this.text.length;
   this.height = this.font.spriteHeight;
 };
 
@@ -165,11 +165,21 @@ TextRenderer.prototype.render = function () {
 };
 
 TextRenderer.prototype.setText = function(text,dl) {
-  this.text = text;
-  this.setDesiredLength(dl);
+  if (typeof dl === 'undefined' || dl === null) {
+    this.resize(text);
+    this.text = text;
+  } else {
+    this.text = text;
+    this.setDesiredLength(dl);
+  }
+};
+
+TextRenderer.prototype.resize = function(text) {
+  this.desiredLength += (text.length - this.text.length)*(this.font.spriteWidth*this.scaleRatio);
 };
 
 TextRenderer.prototype.setDesiredLength = function(dl) {
+  this.desiredLength = dl;
   this.scaleRatio = dl / (this.font.spriteWidth * this.text.length);
 }
 

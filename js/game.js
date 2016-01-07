@@ -1,7 +1,25 @@
 // The game setup
 // ------------------------------------------------------------------------
+
+// Font test
+// src: https://github.com/mihaip/web-experiments/blob/master/canvas-text/font.png
+
+var font = new FontMap({
+    width: 512,
+    height: 512,
+    imageurl: "./img/font.png",
+    numFrames: 256,
+    numCols: 16,
+    numRows: 16
+});
+
+
 var red = new Ball(50,50,"#FF0000",5,max_dx,max_dy);
-var test = new ProxyBot(100,100);
+var health = new Health(5,5,{
+    font: font,
+    desiredLength: 200
+});
+var test = new ProxyBot(100,100,health);
 var wall = new Wall(0,0,dalí.canvas.width,25);
 
 var room = new Room();
@@ -32,19 +50,7 @@ room.addObject(wall);
 wall = new Wall(dalí.canvas.width-25,0,25,dalí.canvas.height);
 room.addObject(wall);
 
-// Font test
-// src: https://github.com/mihaip/web-experiments/blob/master/canvas-text/font.png
-
-var font = new FontMap({
-    width: 512,
-    height: 512,
-    imageurl: "./img/font.png",
-    numFrames: 256,
-    numCols: 16,
-    numRows: 16
-});
-
-var text = new GameObject(5,5);
+var text = new GameObject(dalí.canvas.width - 205,5);
 text.gameComponents.push(new TextRenderer(text,{
     font: font,
     text: "Ball Game!",
@@ -53,8 +59,10 @@ text.gameComponents.push(new TextRenderer(text,{
 
 room.addObject(text);
 
-var loading = new GameObject((dalí.canvas.width/2)-200,dalí.canvas.height/2);
-loading.gameComponents.push(new TextRenderer(text,{
+room.addObject(health);
+
+var loading = new GameObject((dalí.canvas.width/2)-200,50);
+loading.gameComponents.push(new TextRenderer(loading,{
     font: font,
     text: "Loading...",
     desiredLength: 400
@@ -90,6 +98,7 @@ console.log(red.GUID);
     }
 
     window.checkQuit = checkQuit;
+    window.gameOver = gameOver;
 }());
 
 
@@ -150,6 +159,8 @@ if (typeof bgMusic.loop === 'boolean') {
         this.play();
     }, false);
 }
-bgMusic.play();
 
-gameLoop();
+bgMusic.addEventListener('canplaythrough', function() { 
+   bgMusic.play();
+   gameLoop();
+}, false);
