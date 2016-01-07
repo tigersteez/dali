@@ -1,16 +1,13 @@
 const max_dx = 100;
 const max_dy = 100;
 
-ballImg = new Image();
-ballImg.src = "./img/blue_orb.png";
-
 const BALL_LENGTH = 216;
 const BALL_SCALE = 0.05;
 
 var ballMap = new SpriteMap({
     width: BALL_LENGTH,
     height: BALL_LENGTH,
-    image: ballImg,
+    imageurl: BALL_URL,
     numFrames: 1,
     numCols: 1
 });

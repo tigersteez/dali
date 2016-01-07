@@ -34,13 +34,11 @@ room.addObject(wall);
 
 // Font test
 // src: https://github.com/mihaip/web-experiments/blob/master/canvas-text/font.png
-var fontImg = new Image();
-fontImg.src = "./img/font.png";
 
 var font = new FontMap({
     width: 512,
     height: 512,
-    image: fontImg,
+    imageurl: "./img/font.png",
     numFrames: 256,
     numCols: 16,
     numRows: 16
@@ -55,6 +53,12 @@ text.gameComponents.push(new TextRenderer(text,{
 
 room.addObject(text);
 
+var loading = new GameObject((dalí.canvas.width/2)-200,dalí.canvas.height/2);
+loading.gameComponents.push(new TextRenderer(text,{
+    font: font,
+    text: "Loading...",
+    desiredLength: 400
+}));
 
 // check generated GUID's
 console.log(test.GUID);
@@ -106,17 +110,25 @@ function update() {
     dalí.physics.checkCollisions(room);
 }
 
-var counter = 0;
+var loop = false;
 
 function gameLoop() {
-    counter++;
-    if (counter > 2) {
+    requestAnimationFrame(gameLoop);
+
+    if (loop) {
         dalí.events.emptyQueue();
-        requestAnimationFrame(gameLoop);
         readHID();
         update();
         dalí.events.emptyQueue();
         draw();
+    } else {
+        dalí.resources.updateState();
+        if (dalí.resources.preloaders.imgs.isReady()) {
+            dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
+            dalí.main.fillStyle = "#000";
+            dalí.main.fillRect(0,0,dalí.canvas.width,dalí.canvas.height);
+            loading.draw();
+        }
     }
 }
 
@@ -140,4 +152,4 @@ if (typeof bgMusic.loop === 'boolean') {
 }
 bgMusic.play();
 
-
+gameLoop();

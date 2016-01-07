@@ -1,5 +1,3 @@
-var spriteImg = new Image();
-spriteImg.src = "./img/proxyBot.png";
 
 const SPRITE_WIDTH = 4096;
 const SPRITE_HEIGHT = 256;
@@ -9,7 +7,7 @@ const SPRITE_SCALE = 0.1;
 var spriteMap = new SpriteMap({
     width: SPRITE_WIDTH,
     height: SPRITE_HEIGHT,
-    image: spriteImg,
+    imageurl: SPRITE_URL,
     numFrames: NUM_SPRITES,
     numCols: NUM_SPRITES
 });
@@ -63,7 +61,6 @@ var score = 0;
 
 window.onload = function () {
   scoreboard = document.getElementById("scoreboard");
-  gameLoop();
 };
 
 ProxyBot.prototype.ongamecollision = function(eventData) {

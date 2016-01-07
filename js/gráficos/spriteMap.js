@@ -8,7 +8,7 @@ function SpriteMap(options) {
   this.numCols = options.numCols || 1;
   this.width = options.width;
   this.height = options.height;
-  this.image = options.image;
+  this.imageurl = options.imageurl;
 
   this.spriteWidth = this.width / this.numCols;
   this.spriteHeight = this.height / this.numRows;
@@ -16,8 +16,14 @@ function SpriteMap(options) {
 
 SpriteMap.prototype.render = function (i,j,scaleRatio) {
   // Draw the corresponding sprite
+
+  var img = dalí.resources.levelloaders.imgs.get(this.imageurl) || 
+   dalí.resources.preloaders.imgs.get(this.imageurl) ||
+   dalí.resources.gameloaders.imgs.get(this.imageurl) ||
+   dalí.resources.levelloaders.preloaders.imgs.get(this.imageurl);
+
   dalí.main.drawImage(
-    this.image,
+    img,
     j * this.spriteWidth, // column
     i * this.spriteHeight, // row
     this.spriteWidth,
@@ -28,7 +34,7 @@ SpriteMap.prototype.render = function (i,j,scaleRatio) {
     this.spriteHeight * scaleRatio
   );
   dalí.fg.drawImage(
-    this.image,
+    img,
     j * this.spriteWidth, // column
     i * this.spriteHeight, // row
     this.spriteWidth,
@@ -86,7 +92,7 @@ function Texture(imgurl) {
 
   this.img.onload = function () {
     this.myTexture.texture = dalí.main.createPattern(this, 'repeat');
-    gameLoop();
+    //gameLoop();
   };
 }
 
