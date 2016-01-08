@@ -117,9 +117,13 @@ function ParticleRenderer(go,options) {
 }
 
 ParticleRenderer.prototype.render = function () {
+    var cameraPos = dalí.room.mainCamera.getPosition();
+    var gameX = this.gameObj.getX() - cameraPos.x,
+      gameY = this.gameObj.getY() - cameraPos.y;
+
     dalí.fg.beginPath();
-    dalí.fg.arc(this.gameObj.getX() + this.scaleRatio * this.radius, 
-      this.gameObj.getY() + this.scaleRatio * this.radius, 
+    dalí.fg.arc(gameX + this.scaleRatio * this.radius, 
+      gameY + this.scaleRatio * this.radius, 
       this.scaleRatio * this.radius, 
       0, Math.PI*2);
     dalí.fg.fillStyle = this.fillColor;
@@ -127,8 +131,8 @@ ParticleRenderer.prototype.render = function () {
     dalí.fg.closePath();
 
     dalí.main.beginPath();
-    dalí.main.arc(this.gameObj.getX() + this.scaleRatio * this.radius, 
-      this.gameObj.getY() + this.scaleRatio * this.radius, 
+    dalí.main.arc(gameX + this.scaleRatio * this.radius, 
+      gameY + this.scaleRatio * this.radius, 
       this.scaleRatio * this.radius, 
       0, Math.PI*2);
     dalí.main.fillStyle = this.fillColor;
@@ -148,32 +152,35 @@ function BoxRenderer(go,options) {
 }
 
 BoxRenderer.prototype.render = function () {
+  var cameraPos = dalí.room.mainCamera.getPosition();
+  var gameX = this.gameObj.getX() - cameraPos.x,
+      gameY = this.gameObj.getY() - cameraPos.y;
   dalí.fg.beginPath();
   dalí.fg.fillStyle = this.fillColor;
   dalí.fg.fillRect(this.gameObj.getX(),
-      this.gameObj.getY(), 
+      gameY, 
       this.width,
       this.height);
 
   dalí.main.beginPath();
   dalí.main.fillStyle = this.fillColor;
-  dalí.main.fillRect(this.gameObj.getX(),
-      this.gameObj.getY(), 
+  dalí.main.fillRect(gameX,
+      gameY, 
       this.width,
       this.height);
 
   if (this.borderThickness != 0) { 
     dalí.fg.strokeStyle = this.borderColor;
     dalí.fg.lineWidth = this.borderThickness;
-    dalí.fg.strokeRect(this.gameObj.getX(),
-      this.gameObj.getY(), 
+    dalí.fg.strokeRect(gameX,
+      gameY, 
       this.width,
       this.height);
 
     dalí.main.strokeStyle = this.borderColor;
     dalí.main.lineWidth = this.borderThickness;
-    dalí.main.strokeRect(this.gameObj.getX(),
-      this.gameObj.getY(), 
+    dalí.main.strokeRect(gameX,
+      gameY, 
       this.width,
       this.height);
   }

@@ -15,8 +15,9 @@ dalí.physics.raiseCollision = function(collisionData) {
  * 
  */
 dalí.physics.testForCollision = function(c1, c2) {
-  if (dalí.physics.isPixelCollision(c1.imgData, c1.gameObj.getX(), c1.gameObj.getY(),
-   c2.imgData, c2.gameObj.getX(), c2.gameObj.getY())) {
+  var cameraPos = dalí.room.mainCamera.getPosition();
+  if (dalí.physics.isPixelCollision(c1.imgData, c1.gameObj.getX() - cameraPos.x, c1.gameObj.getY() - cameraPos.y,
+   c2.imgData, c2.gameObj.getX() - cameraPos.x, c2.gameObj.getY() - cameraPos.y)) {
     var collisionData = {
       eventType: dalí.physics.collisionEvent,
       GUID1: c1.GUID,

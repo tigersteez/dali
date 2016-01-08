@@ -47,11 +47,12 @@ SpriteMap.prototype.render = function (i,j,scaleRatio) {
 };
 
 SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio) {
+  var cameraPos = dalí.room.mainCamera.getPosition();
   dalí.fg.save();
   dalí.main.save();
   // top left corner
-  dalí.fg.translate(x,y);
-  dalí.main.translate(x,y);
+  dalí.fg.translate(x - cameraPos.x,y - cameraPos.y);
+  dalí.main.translate(x - cameraPos.x,y - cameraPos.y);
   this.render(i,j,scaleRatio);
   dalí.fg.restore();
   dalí.main.restore();
@@ -97,12 +98,13 @@ function Texture(imgurl) {
 }
 
 Texture.prototype.render = function(x,y,w,h,isBackground) {
+    var cameraPos = dalí.room.mainCamera.getPosition();
     dalí.main.fillStyle = this.texture;
-    dalí.main.fillRect(x, y, w, h);
+    dalí.main.fillRect(x - cameraPos.x, y - cameraPos.y, w, h);
 
     if (!isBackground) {
       dalí.fg.fillStyle = this.texture;
-      dalí.fg.fillRect(x, y, w, h);
+      dalí.fg.fillRect(x - cameraPos.x, y - cameraPos.y, w, h);
     }
 };
 

@@ -6,6 +6,8 @@ function Room() {
   this.movers = [];
   this.players = [];
   this.toBeRemoved = new Queue();
+  this.mainCamera = null;
+  this.cameras = [];
 }
 
 Room.prototype.addObj = function(gameObj) {
@@ -23,6 +25,13 @@ Room.prototype.addObj = function(gameObj) {
         this.movers.push(gameObj.GUID);
       } else {
         this.colliders.push(gameObj.GUID);
+      }
+    }
+
+    if (gameObj instanceof Camera) {
+      this.cameras.push(gameObj.GUID);
+      if (this.mainCamera === null) {
+        this.mainCamera = gameObj;
       }
     }
   }
@@ -55,9 +64,11 @@ Room.prototype.remove = function(GUID) {
 };
 
 Room.prototype.readHID = function() {
-  for (var i in this.players) {
-    if (this.objects[this.players[i]] instanceof Player) {
-      this.objects[this.players[i]].readHID();
+  // TODO: might want to restructure this...
+  for (var key in this.objects) {
+    if (this.objects[key] instanceof Player || 
+      this.objects[key] instanceof Camera) {
+      this.objects[key].readHID();
     }
   }
 };

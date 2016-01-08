@@ -29,6 +29,10 @@ function GameObject (x,y) {
   };
 }
 
+GameObject.prototype.addComp = function(comp) {
+  this.gameComponents.push(comp);
+}
+
 GameObject.prototype.update = function () {
   this.gameComponents.forEach(
     function(component) {
@@ -48,15 +52,36 @@ GameObject.prototype.getY = function () {
   return this.transform.position.y;
 };
 
+GameObject.prototype.getPosition = function () {
+  return this.transform.position;
+}
+
+function Camera(player) {
+  if (typeof player !== 'undefined' && player !== null) {
+    GameObject.call(this,player.getX(),player.getY());
+  } else {
+    GameObject.call(this,0,0);
+  }
+}
+
+dalí.extend(GameObject, Camera);
+
 // Player
 // -------------------------------------------------------------------------------
-function Player(x,y) {
+function Player(x,y,camera) {
   GameObject.call(this,x,y);
+  if (typeof camera !== 'undefined' && camera !== null) {
+    this.camera = camera;
+    // Assumes that since camera was given, it was already added to room
+  } else {
+    this.camera = new Camera(this);
+    dalí.room.addObj(this.camera);
+  }
 }
 
 dalí.extend(GameObject, Player);
 
-Player.prototype.readHID = function () {
+GameObject.prototype.readHID = function () {
   this.gameComponents.forEach(
     function(component) {
       if (component instanceof GameComponent) {

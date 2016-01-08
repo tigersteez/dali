@@ -80,8 +80,8 @@ dalí.extend(UI_Element, Health);
 
 // ProxyBot
 // ------------------------------------------------------------------------------------
-function ProxyBot(x,y,health,score) {
-  Player.call(this,x,y);
+function ProxyBot(x,y,health,score,camera) {
+  Player.call(this,x,y,camera);
   EventHandler.call(this,[dalí.physics.collisionEvent],this.GUID);
   this.gameComponents.push(new Mover(this,true));
   this.gameComponents.push(new ProxyController(this));

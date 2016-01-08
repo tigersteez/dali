@@ -1,3 +1,43 @@
+// CameraMover
+// ------------------------------------------------------------------------------------
+function CameraMover(go) {
+  GameComponent.call(this,go);
+this.dx = 0;
+  this.dy = 0;
+}
+
+CameraMover.prototype.update = function () {
+    this.gameObj.transform.position.x = this.gameObj.transform.position.x + 
+        this.dx * dalí.time.getDeltaTime();
+
+    this.gameObj.transform.position.y = this.gameObj.transform.position.y + 
+        this.dy * dalí.time.getDeltaTime();
+
+  this.dx = 0;
+  this.dy = 0;
+};
+
+CameraMover.prototype.readHID = function () {
+    if (dalí.input.keys.isDown('A')) {
+      this.dx = -max_dx;
+    } 
+
+    if (dalí.input.keys.isDown('D')) {
+      this.dx = max_dx;
+    }
+
+    if (dalí.input.keys.isDown('W')) {
+      this.dy = -max_dy;
+    } 
+
+    if (dalí.input.keys.isDown('S')) {
+      this.dy = max_dy;
+    }
+};
+
+dalí.extend(GameComponent, CameraMover);
+
+
 // The game setup
 // ------------------------------------------------------------------------
 
@@ -31,12 +71,16 @@ var score = new Score(5,dalí.canvas.height-25,{
     }
 });
 
-var test = new ProxyBot(100,100,health,score);
-var wall = new Wall(0,0,dalí.canvas.width,25);
-
 var room = new Room();
 
 dalí.room = room;
+
+var camera = new Camera();
+camera.gameComponents.push(new CameraMover(camera));
+dalí.room.addObj(camera);
+
+var test = new ProxyBot(100,100,health,score,camera);
+var wall = new Wall(0,0,dalí.canvas.width,25);
 
 var bgObj = new GameObject(0,0);
 
@@ -54,7 +98,7 @@ dalí.room.addObj(test);
 
 var maker = new GameObject(0,0);
 maker.gameComponents.push(
-    new BallMaker(this,score,test)
+    new BallMaker(maker,score,test)
 );
 dalí.room.addObj(maker);
 maker.gameComponents[0].generateBall();
@@ -140,7 +184,6 @@ function draw() {
 function update() {
     dalí.time.updateDeltaTime();
     dalí.room.update();
-    dalí.physics.checkCollisions(room);
 }
 
 var loop = false;
@@ -155,6 +198,7 @@ function gameLoop() {
         dalí.events.emptyQueue();
         dalí.room.removeObjects();
         draw();
+        dalí.physics.checkCollisions(room);
     } else {
         dalí.resources.updateState();
         if (dalí.resources.preloaders.imgs.isReady()) {
