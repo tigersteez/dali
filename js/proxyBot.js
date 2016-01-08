@@ -1,9 +1,3 @@
-
-const SPRITE_WIDTH = 4096;
-const SPRITE_HEIGHT = 256;
-const NUM_SPRITES = 8;
-const SPRITE_SCALE = 0.1;
-
 var spriteMap = new SpriteMap({
     width: SPRITE_WIDTH,
     height: SPRITE_HEIGHT,

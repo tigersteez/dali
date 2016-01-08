@@ -54,7 +54,7 @@ dalí.room.addObj(test);
 
 var maker = new GameObject(0,0);
 maker.gameComponents.push(
-    new BallMaker(this,score)
+    new BallMaker(this,score,test)
 );
 dalí.room.addObj(maker);
 maker.gameComponents[0].generateBall();
@@ -99,7 +99,7 @@ console.log(test.GUID);
     var quitState = 0;
 
     function gameOver() {
-        alert("GAME OVER");
+        alert("GAME OVER\nYour score: " + score.score.toString());
         document.location.reload();
     }
 

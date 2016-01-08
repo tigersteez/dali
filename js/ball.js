@@ -144,16 +144,26 @@ dalí.extend(UI_Element, Score);
 
 const ANOTHER_BALL = 4;
 
-function BallMaker(go,score) {
-  GameComponent.call(this,go);
-  this.score = score;
-  this.time = 0;
-}
+const SPRITE_WIDTH = 4096;
+const SPRITE_HEIGHT = 256;
+const NUM_SPRITES = 8;
+const SPRITE_SCALE = 0.1;
+
+const proxy_width = SPRITE_WIDTH  * SPRITE_SCALE / NUM_SPRITES;
+const proxy_height = SPRITE_HEIGHT* SPRITE_SCALE;
+const cushion = 7;
 
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function BallMaker(go,score,bot) {
+  GameComponent.call(this,go);
+  this.score = score;
+  this.time = 0;
+  this.proxyBot = bot;
 }
 
 BallMaker.prototype.update = function () {
@@ -166,8 +176,20 @@ BallMaker.prototype.update = function () {
 
 BallMaker.prototype.generateBall = function() {
   this.score.inc();
+
+  // make sure ball isn't within proxy
+  var x = getRandomInt(25,dalí.canvas.width-25),
+      y = getRandomInt(25,dalí.canvas.height-25);
+
+  while (x >= this.proxyBot.getX() - cushion && x <= this.proxyBot.getX() + proxy_width + cushion && 
+            y >= this.proxyBot.getY() - cushion && y <= this.proxyBot.getY() + proxy_height + cushion) {
+    scoreboard.innerHTML += "<p>Would have had collision</p>";
+    x = getRandomInt(25,dalí.canvas.width-25);
+    y = getRandomInt(25,dalí.canvas.height-25);
+  }   
+
   dalí.room.addObj(
-    new Ball(getRandomInt(25,dalí.canvas.width-25), getRandomInt(25,dalí.canvas.height-25), //x.y
+    new Ball(x, y, //x.y
       getRandomInt(MIN_R,MAX_R), //r
       getRandomInt(-max_dx,max_dx),getRandomInt(-max_dy,max_dy), // v
       getRandomInt(-max_a,max_a),getRandomInt(-max_a,max_a) // a
