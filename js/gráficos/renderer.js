@@ -21,6 +21,47 @@ Renderer.prototype.render = function () {};
 
 dalí.extend(GameComponent, Renderer);
 
+(function () {
+  var bg = new Queue();
+  var movers = new Queue();
+  var colliders = new Queue();
+  var ui = new Queue();
+
+  function queue(comp) {
+    if (comp.gameObj instanceof UI_Element || comp instanceof TextRenderer) {
+      ui.enqueue(comp);
+    } else {
+      var collider = comp.gameObj.getCollider();
+      if (collider !== null) {
+        if (collider instanceof Mover) {
+          movers.enqueue(comp);
+        } else {
+          colliders.enqueue(comp);
+        }
+      } else {
+        bg.enqueue(comp);
+      }
+    }
+  }
+
+  var drawComp = function(comp) {
+    comp.draw();
+  }
+
+  function draw() {
+    bg.emptyQueue(drawComp);
+    movers.emptyQueue(drawComp);
+    colliders.emptyQueue(drawComp);
+    ui.emptyQueue(drawComp);
+  }
+
+  window.dalí.drawing = {
+    draw: draw,
+    queue: queue
+  };
+
+} ());
+
 GameObject.prototype.getRenderer = function () {
   for (var i in this.gameComponents) {
     if (this.gameComponents[i] instanceof Renderer) {
@@ -34,7 +75,7 @@ GameObject.prototype.draw = function () {
   this.gameComponents.forEach(
     function(component) {
       if (component instanceof Renderer) {
-        component.draw();
+        dalí.drawing.queue(component);
       }
     }
   );

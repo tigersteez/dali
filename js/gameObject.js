@@ -70,7 +70,7 @@ Player.prototype.readHID = function () {
 // -------------------------------------------------------------------------------
 function GameComponent (go) {
   this.gameObj = go;
-  this.GUID = dalí.identifier.generateComponentID(this)
+  this.GUID = dalí.identifier.generateComponentID(this);
 }
 
 GameComponent.prototype.update = function () {};

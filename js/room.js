@@ -5,9 +5,10 @@ function Room() {
   this.colliders = [];
   this.movers = [];
   this.players = [];
+  this.toBeRemoved = new Queue();
 }
 
-Room.prototype.addObject = function(gameObj) {
+Room.prototype.addObj = function(gameObj) {
   if (gameObj instanceof GameObject) {
     this.objects[gameObj.GUID] = gameObj;
 
@@ -25,6 +26,32 @@ Room.prototype.addObject = function(gameObj) {
       }
     }
   }
+};
+
+function removeNum(array,number) {
+  for(var i = array.length - 1; i >= 0; i--) {
+    if(array[i] === number) {
+       array.splice(i, 1);
+    }
+  }
+}
+
+Room.prototype.removeObj = function(GUID) {
+  this.toBeRemoved.enqueue(GUID);
+};
+
+Room.prototype.removeObjects = function() {
+  while(!this.toBeRemoved.isEmpty()) {
+    this.remove(this.toBeRemoved.dequeue());
+  }
+};
+
+Room.prototype.remove = function(GUID) {
+  // TODO: optimize
+  removeNum(this.colliders, GUID);
+  removeNum(this.movers, GUID);
+  removeNum(this.players, GUID);
+  delete this.objects[GUID];
 };
 
 Room.prototype.readHID = function() {

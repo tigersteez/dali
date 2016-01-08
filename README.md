@@ -5,9 +5,12 @@
 #### Minigames
   
 **_Ball Game_**
+
 + Controls:
   - Left, Right, Up, and Down Arrow to move the ProxyBot
-  - Avoid the Blue Orbs! You have 3 lives...
+  - Avoid as many Blue Orbs as possible! Each orb in-game is 1 point
+  - Your ProxyBot can only withstand 3 hits... 1 point is lost and the orb is removed
+  - An orb of random size, speed, and acceleration is made every 4 seconds
   - 'Q' to restart game
   
 ----

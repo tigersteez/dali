@@ -13,16 +13,30 @@ var font = new FontMap({
     numRows: 16
 });
 
-
-var red = new Ball(50,50,"#FF0000",5,max_dx,max_dy);
 var health = new Health(5,5,{
     font: font,
     desiredLength: 200
 });
-var test = new ProxyBot(100,100,health);
+
+var score = new Score(5,dalí.canvas.height-25,{
+    textRender: {
+        font: font,
+        desiredLength: 20
+    },
+    spriteRender: {
+        width: BALL_LENGTH,
+        height: BALL_LENGTH,
+        scaleRatio: BALL_SCALE,
+        spriteMap: ballMap
+    }
+});
+
+var test = new ProxyBot(100,100,health,score);
 var wall = new Wall(0,0,dalí.canvas.width,25);
 
 var room = new Room();
+
+dalí.room = room;
 
 var bgObj = new GameObject(0,0);
 
@@ -34,21 +48,33 @@ var bgTexture = new TextureRenderer(bgObj,{
 });
 
 bgObj.gameComponents.push(bgTexture);
-room.addObject(bgObj);
+dalí.room.addObj(bgObj);
 
+dalí.room.addObj(test);
 
-room.addObject(red);
-room.addObject(test);
-room.addObject(wall);
+var maker = new GameObject(0,0);
+maker.gameComponents.push(
+    new BallMaker(this,score)
+);
+dalí.room.addObj(maker);
+maker.gameComponents[0].generateBall();
+maker.gameComponents[0].generateBall();
+maker.gameComponents[0].generateBall();
+
+dalí.room.addObj(health);
+
+dalí.room.addObj(score);
+
+dalí.room.addObj(wall);
 
 wall = new Wall(0,0,25,dalí.canvas.height);
-room.addObject(wall);
+dalí.room.addObj(wall);
 
 wall = new Wall(0,dalí.canvas.height - 25,dalí.canvas.width,25);
-room.addObject(wall);
+dalí.room.addObj(wall);
 
 wall = new Wall(dalí.canvas.width-25,0,25,dalí.canvas.height);
-room.addObject(wall);
+dalí.room.addObj(wall);
 
 var text = new GameObject(dalí.canvas.width - 205,5);
 text.gameComponents.push(new TextRenderer(text,{
@@ -57,9 +83,7 @@ text.gameComponents.push(new TextRenderer(text,{
     desiredLength: 200
 }));
 
-room.addObject(text);
-
-room.addObject(health);
+dalí.room.addObj(text);
 
 var loading = new GameObject((dalí.canvas.width/2)-200,50);
 loading.gameComponents.push(new TextRenderer(loading,{
@@ -70,7 +94,6 @@ loading.gameComponents.push(new TextRenderer(loading,{
 
 // check generated GUID's
 console.log(test.GUID);
-console.log(red.GUID);
 
 (function () {
     var quitState = 0;
@@ -104,18 +127,19 @@ console.log(red.GUID);
 
 function readHID() {
     checkQuit();
-    room.readHID();
+    dalí.room.readHID();
 }
 
 function draw() {
     dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
     dalí.fg.clearRect(0,0, dalí.canvas.width, dalí.canvas.height);
-    room.draw();
+    dalí.room.draw();
+    dalí.drawing.draw();
 }
 
 function update() {
     dalí.time.updateDeltaTime();
-    room.update();
+    dalí.room.update();
     dalí.physics.checkCollisions(room);
 }
 
@@ -129,6 +153,7 @@ function gameLoop() {
         readHID();
         update();
         dalí.events.emptyQueue();
+        dalí.room.removeObjects();
         draw();
     } else {
         dalí.resources.updateState();

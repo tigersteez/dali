@@ -41,7 +41,7 @@ function UI_Element(x,y,options) {
 
 UI_Element.prototype.draw = function () {
     for (var i =0; i < this.gameComponents.length; i++) {
-        this.gameComponents[i].draw();
+        dalí.drawing.queue(this.gameComponents[i]);
         this.transform.position.x += this.gameComponents[i].width * this.gameComponents[i].scaleRatio;
     }
     this.transform.position.x = this.x0;

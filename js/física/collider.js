@@ -27,7 +27,7 @@ function Mover(go,isSolid,vx,vy,ax,ay) {
 
 Mover.prototype.update = function () {
   this.velocity = Vector.add(this.velocity,
-    Vector.mult(this.acceler,dalí.time.getDeltaTime));
+    Vector.mult(this.acceler,dalí.time.getDeltaTime()));
   this.gameObj.transform.position = Vector.add(this.gameObj.transform.position,
     Vector.mult(this.velocity,dalí.time.getDeltaTime()));
 }

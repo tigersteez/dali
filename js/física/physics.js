@@ -52,7 +52,6 @@ dalí.physics.checkCollisions = function(room) {
 //
 document.addEventListener(dalí.physics.collisionEvent, function (event) {
   var data = event.detail;
-
   var guidData1 = dalí.identifier.getDataFromGUID(data.GUID1);
   var guidData2 = dalí.identifier.getDataFromGUID(data.GUID2);
 

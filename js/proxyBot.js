@@ -86,7 +86,7 @@ dalí.extend(UI_Element, Health);
 
 // ProxyBot
 // ------------------------------------------------------------------------------------
-function ProxyBot(x,y,health) {
+function ProxyBot(x,y,health,score) {
   Player.call(this,x,y);
   EventHandler.call(this,[dalí.physics.collisionEvent],this.GUID);
   this.gameComponents.push(new Mover(this,true));
@@ -98,6 +98,7 @@ function ProxyBot(x,y,health) {
     ticksPerFrame: 1
   }));
   this.health = health;
+  this.score = score;
 
   // Component GUID check
   // this.gameComponents.forEach(function (component) {
@@ -139,13 +140,13 @@ ProxyBot.prototype.ongamecollision = function(eventData) {
     console.log(scoreString); 
     // scoreboard.innerHTML = scoreString;
     this.health.dec();
+    this.score.dec();
+    dalí.room.removeObj(otherData.getObjID());
 
-    scoreboard.innerHTML = "<p>Collided</p>";
     if (canPlay) {
-      scoreboard.innerHTML += "<p>Played noise!</p>";
       bounceSound.play();
     }
-    
+
   }
 };
 
