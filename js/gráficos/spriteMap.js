@@ -51,7 +51,7 @@ SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio) {
   dalí.fg.save();
   dalí.main.save();
   // top left corner
-  dalí.fg.translate(x - cameraPos.x,y - cameraPos.y);
+  dalí.fg.translate(x,y);
   dalí.main.translate(x - cameraPos.x,y - cameraPos.y);
   this.render(i,j,scaleRatio);
   dalí.fg.restore();
@@ -104,7 +104,7 @@ Texture.prototype.render = function(x,y,w,h,isBackground) {
 
     if (!isBackground) {
       dalí.fg.fillStyle = this.texture;
-      dalí.fg.fillRect(x - cameraPos.x, y - cameraPos.y, w, h);
+      dalí.fg.fillRect(x, y, w, h);
     }
 };
 

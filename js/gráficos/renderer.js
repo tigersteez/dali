@@ -122,8 +122,8 @@ ParticleRenderer.prototype.render = function () {
       gameY = this.gameObj.getY() - cameraPos.y;
 
     dalí.fg.beginPath();
-    dalí.fg.arc(gameX + this.scaleRatio * this.radius, 
-      gameY + this.scaleRatio * this.radius, 
+    dalí.fg.arc(this.gameObj.getX() + this.scaleRatio * this.radius, 
+      this.gameObj.getY() + this.scaleRatio * this.radius, 
       this.scaleRatio * this.radius, 
       0, Math.PI*2);
     dalí.fg.fillStyle = this.fillColor;
@@ -158,7 +158,7 @@ BoxRenderer.prototype.render = function () {
   dalí.fg.beginPath();
   dalí.fg.fillStyle = this.fillColor;
   dalí.fg.fillRect(this.gameObj.getX(),
-      gameY, 
+      this.gameObj.getY(), 
       this.width,
       this.height);
 
@@ -172,8 +172,8 @@ BoxRenderer.prototype.render = function () {
   if (this.borderThickness != 0) { 
     dalí.fg.strokeStyle = this.borderColor;
     dalí.fg.lineWidth = this.borderThickness;
-    dalí.fg.strokeRect(gameX,
-      gameY, 
+    dalí.fg.strokeRect(this.gameObj.getX(),
+      this.gameObj.getY(),
       this.width,
       this.height);
 
