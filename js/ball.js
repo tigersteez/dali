@@ -9,20 +9,6 @@ const MAX_R = 10;
 const BALL_LENGTH = 216;
 const BALL_SCALE = 0.05;
 
-var canPlay = false;
-
-var bounceSound = new Audio("./audio/whoosh.wav");
-// if (typeof bounceSound.loop === 'boolean') {
-//     bounceSound.loop = true;
-// } else {
-//     bounceSound.addEventListener("ended", function() {
-//         this.currentTime = 0;
-//         this.play();
-//     }, false);
-// }
-
-var scoreboard = document.getElementById("scoreboard");
-
 // Ball
 // ------------------------------------------------------------------------------------
 function Ball(x,y,radius,dx,dy,ax,ay) {
@@ -162,7 +148,6 @@ BallMaker.prototype.generateBall = function() {
 
   while (x >= this.proxyBot.getX() - cushion && x <= this.proxyBot.getX() + proxy_width + cushion && 
             y >= this.proxyBot.getY() - cushion && y <= this.proxyBot.getY() + proxy_height + cushion) {
-    scoreboard.innerHTML += "<p>Would have had collision</p>";
     x = getRandomInt(25,dalí.canvas.width-25);
     y = getRandomInt(25,dalí.canvas.height-25);
   }   
