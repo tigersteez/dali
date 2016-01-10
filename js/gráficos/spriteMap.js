@@ -8,7 +8,7 @@ function SpriteMap(options) {
   this.numCols = options.numCols || 1;
   this.width = options.width;
   this.height = options.height;
-  this.imageurl = options.imageurl;
+  this.img = dalí.resources.getImg(options.imgurl);
 
   this.spriteWidth = this.width / this.numCols;
   this.spriteHeight = this.height / this.numRows;
@@ -17,13 +17,8 @@ function SpriteMap(options) {
 SpriteMap.prototype.render = function (i,j,scaleRatio) {
   // Draw the corresponding sprite
 
-  var img = dalí.resources.levelloaders.imgs.get(this.imageurl) || 
-   dalí.resources.preloaders.imgs.get(this.imageurl) ||
-   dalí.resources.gameloaders.imgs.get(this.imageurl) ||
-   dalí.resources.levelloaders.preloaders.imgs.get(this.imageurl);
-
   dalí.main.drawImage(
-    img,
+    this.img,
     j * this.spriteWidth, // column
     i * this.spriteHeight, // row
     this.spriteWidth,
@@ -34,7 +29,7 @@ SpriteMap.prototype.render = function (i,j,scaleRatio) {
     this.spriteHeight * scaleRatio
   );
   dalí.fg.drawImage(
-    img,
+    this.img,
     j * this.spriteWidth, // column
     i * this.spriteHeight, // row
     this.spriteWidth,
@@ -86,15 +81,8 @@ dalí.extend(SpriteMap,FontMap);
 // Texture
 // ------------------------------------------------------------------------------------------
 function Texture(imgurl) {
-  this.img = new Image();
-  this.img.src = imgurl;
-  this.img.myTexture = this;
-  this.texture = null;
-
-  this.img.onload = function () {
-    this.myTexture.texture = dalí.main.createPattern(this, 'repeat');
-    //gameLoop();
-  };
+  this.imgurl = imgurl;
+  this.texture = dalí.main.createPattern(dalí.resources.getImg(imgurl), 'repeat');
 }
 
 Texture.prototype.render = function(x,y,w,h,isBackground) {
@@ -107,8 +95,4 @@ Texture.prototype.render = function(x,y,w,h,isBackground) {
       dalí.fg.fillRect(x, y, w, h);
     }
 };
-
-var stone = new Texture("./img/stone_texture.png");
-
-var brick = new Texture("./img/brick.png");
 

@@ -9,14 +9,6 @@ const MAX_R = 10;
 const BALL_LENGTH = 216;
 const BALL_SCALE = 0.05;
 
-var ballMap = new SpriteMap({
-    width: BALL_LENGTH,
-    height: BALL_LENGTH,
-    imageurl: BALL_URL,
-    numFrames: 1,
-    numCols: 1
-});
-
 var canPlay = false;
 
 var bounceSound = new Audio("./audio/whoosh.wav");
@@ -45,7 +37,7 @@ function Ball(x,y,radius,dx,dy,ax,ay) {
     width: BALL_LENGTH,
     height: BALL_LENGTH,
     scaleRatio: (2*radius)/BALL_LENGTH,
-    spriteMap: ballMap
+    spriteurl: BALL_URL
   }));
   this.gameComponents.push(new Mover(this,true,dx,dy,ax||1,ay||1));
 }
@@ -73,27 +65,6 @@ Ball.prototype.ongamecollision = function(eventData) {
 
 }
 
-// Test function
-// Mover.prototype.draw = function () {
-//     dalí.main.beginPath();
-//     dalí.main.arc(this.gameObj.getX(), 
-//       this.gameObj.getY(), 
-//       4, 
-//       0, Math.PI*2);
-//     dalí.main.fillStyle = "#eee";
-//     dalí.main.fill();
-//     dalí.main.closePath();
-
-//     dalí.main.beginPath();
-//     dalí.main.arc(this.gameObj.getX() + this.imgData.width, 
-//       this.gameObj.getY() + this.imgData.height, 
-//       4, 
-//       0, Math.PI*2);
-//     dalí.main.fillStyle = "#eee";
-//     dalí.main.fill();
-//     dalí.main.closePath();
-// };
-
 dalí.extend(EventHandler, Ball);
 dalí.extend(GameObject, Ball);
 
@@ -106,7 +77,7 @@ function Wall(x,y,width,height) {
       width: width,
       height: height,
       isBackground: false,
-      texture: brick
+      textureurl: BRICK_URL
     })
   );
   this.gameComponents.push(new Collider(this,true));

@@ -1,0 +1,74 @@
+{
+  "preloadResources": {
+    "textures": [],
+    "fonts": {
+        "urls": ["./img/font.png"],
+        "details": {
+          "./img/font.png": {
+                "width": 512,
+                "height": 512,
+                "imgurl": "./img/font.png",
+                "numFrames": 256,
+                "numCols": 16,
+                "numRows": 16
+            }
+        }
+    },
+    "sprites": {
+        "urls": [],
+        "details": {}
+    }
+  },
+
+  "gameResources": {
+    "textures": [],
+    "fonts": {
+        "urls": [],
+        "details": {}
+    },
+    "sprites": {
+        "urls": ["./img/proxyBot.png"],
+        "details": {
+          "./img/proxyBot.png": {
+                "width": 4096,
+                "height": 256,
+                "imgurl": "./img/proxyBot.png",
+                "numFrames": 8,
+                "numCols": 8
+            }
+        }
+    }
+  },
+
+  "levelPreloadResources": {
+    "textures": ["./img/stone_texture.png"],
+    "fonts": {
+        "urls": [],
+        "details": {}
+    },
+    "sprites": {
+        "urls": [],
+        "details": {}
+    }
+  },
+
+  "levelResources": {
+    "textures": ["./img/brick.png"],
+    "fonts": {
+        "urls": [],
+        "details": {}
+    },
+    "sprites": {
+        "urls": ["./img/blue_orb.png"],
+        "details": {
+          "./img/blue_orb.png": {
+                "width": 216,
+                "height": 216,
+                "imgurl": "./img/blue_orb.png",
+                "numFrames": 1,
+                "numCols": 1
+            }
+        }
+    }
+  }
+}

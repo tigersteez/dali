@@ -1,6 +1,7 @@
 // Room
 // ---------------------------------------------------
 function Room() {
+  this.loadingObjs = {};
   this.objects = {};
   this.colliders = [];
   this.movers = [];
@@ -9,6 +10,12 @@ function Room() {
   this.mainCamera = null;
   this.cameras = [];
 }
+
+Room.prototype.addLoadingObj = function(gameObj) {
+  if (gameObj instanceof GameObject) {
+    this.loadingObjs[gameObj.GUID] = gameObj;
+  }
+};
 
 Room.prototype.addObj = function(gameObj) {
   if (gameObj instanceof GameObject) {
@@ -74,11 +81,14 @@ Room.prototype.readHID = function() {
 };
 
 Room.prototype.draw = function() {
+  dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
+  dalí.fg.clearRect(0,0, dalí.canvas.width, dalí.canvas.height);
   for (var key in this.objects) {
     if (this.objects[key] instanceof GameObject) {
       this.objects[key].draw();
     }
   }
+  dalí.drawing.draw();
 };
 
 Room.prototype.update = function() {
@@ -111,7 +121,7 @@ Room.prototype.getCollider = function(GUID) {
     }
   }
   return null;
-}
+};
 
 Room.prototype.getMover = function(GUID) {
   if (this.movers.contains(GUID)) {
@@ -121,4 +131,34 @@ Room.prototype.getMover = function(GUID) {
     }
   }
   return null;
-}
+};
+
+Room.prototype.loop = function () {
+  dalí.events.emptyQueue();
+  this.readHID();
+  dalí.time.updateDeltaTime();
+  this.update();
+  dalí.events.emptyQueue();
+  this.removeObjects();
+  this.draw();
+  dalí.physics.checkCollisions(this);
+};
+
+Room.prototype.drawLoading = function () {
+  dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
+  dalí.fg.clearRect(0,0, dalí.canvas.width, dalí.canvas.height);
+  dalí.main.fillStyle = "#000";
+  dalí.main.fillRect(0,0,dalí.canvas.width,dalí.canvas.height);
+  for (var key in this.loadingObjs) {
+    if (this.loadingObjs[key] instanceof GameObject) {
+      this.loadingObjs[key].draw();
+    }
+  }
+  dalí.drawing.draw();
+};
+
+Room.prototype.deleteLoading = function () {
+  delete loadingObjs;
+};
+
+

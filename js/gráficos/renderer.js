@@ -87,7 +87,7 @@ GameObject.prototype.draw = function () {
 // ------------------------------------------------------------------------------------------
 function SpriteRenderer(go,options) {
     Renderer.call(this,go,options);
-    this.spriteMap = options.spriteMap;
+    this.spriteMap = dalí.resources.getSprite(options.spriteurl);
     this.width = this.spriteMap.spriteWidth;
     this.height = this.spriteMap.spriteHeight;
 }
@@ -195,7 +195,7 @@ dalí.extend(Renderer, BoxRenderer);
 // -------------------------------------------------------------------
 function TextRenderer(go,options) {
   Renderer.call(this,go,options);
-  this.font = options.font;
+  this.font = dalí.resources.getFont(options.fonturl);
   this.text = options.text;
   this.setDesiredLength(options.desiredLength);
   this.width = this.font.spriteWidth * this.text.length;
@@ -237,7 +237,7 @@ dalí.extend(Renderer, TextRenderer);
 // -------------------------------------------------------------------
 function TextureRenderer(go,options) {
   Renderer.call(this,go,options);
-  this.texture = options.texture;
+  this.texture = dalí.resources.getTexture(options.textureurl);
   this.isBackground = options.isBackground || true;
 }
 

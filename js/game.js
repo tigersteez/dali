@@ -43,101 +43,12 @@ dalí.extend(GameComponent, CameraMover);
 
 // Font test
 // src: https://github.com/mihaip/web-experiments/blob/master/canvas-text/font.png
-
-var font = new FontMap({
-    width: 512,
-    height: 512,
-    imageurl: "./img/font.png",
-    numFrames: 256,
-    numCols: 16,
-    numRows: 16
-});
-
-var health = new Health(5,5,{
-    font: font,
-    desiredLength: 200
-});
-
-var score = new Score(5,dalí.canvas.height-25,{
-    textRender: {
-        font: font,
-        desiredLength: 20
-    },
-    spriteRender: {
-        width: BALL_LENGTH,
-        height: BALL_LENGTH,
-        scaleRatio: BALL_SCALE,
-        spriteMap: ballMap
-    }
-});
-
-var room = new Room();
-
-dalí.room = room;
-
-var camera = new Camera();
-camera.gameComponents.push(new CameraMover(camera));
-dalí.room.addObj(camera);
-
-var test = new ProxyBot(100,100,health,score,camera);
-var wall = new Wall(0,0,dalí.canvas.width,25);
-
-var bgObj = new GameObject(0,0);
-
-var bgTexture = new TextureRenderer(bgObj,{
-    texture: stone,
-    width: dalí.canvas.width,
-    height: dalí.canvas.height,
-    isBackground: true
-});
-
-bgObj.gameComponents.push(bgTexture);
-dalí.room.addObj(bgObj);
-
-dalí.room.addObj(test);
-
-var maker = new GameObject(0,0);
-maker.gameComponents.push(
-    new BallMaker(maker,score,test)
-);
-dalí.room.addObj(maker);
-maker.gameComponents[0].generateBall();
-maker.gameComponents[0].generateBall();
-maker.gameComponents[0].generateBall();
-
-dalí.room.addObj(health);
-
-dalí.room.addObj(score);
-
-dalí.room.addObj(wall);
-
-wall = new Wall(0,0,25,dalí.canvas.height);
-dalí.room.addObj(wall);
-
-wall = new Wall(0,dalí.canvas.height - 25,dalí.canvas.width,25);
-dalí.room.addObj(wall);
-
-wall = new Wall(dalí.canvas.width-25,0,25,dalí.canvas.height);
-dalí.room.addObj(wall);
-
-var text = new GameObject(dalí.canvas.width - 205,5);
-text.gameComponents.push(new TextRenderer(text,{
-    font: font,
-    text: "Ball Game!",
-    desiredLength: 200
-}));
-
-dalí.room.addObj(text);
-
-var loading = new GameObject((dalí.canvas.width/2)-200,50);
-loading.gameComponents.push(new TextRenderer(loading,{
-    font: font,
-    text: "Loading...",
-    desiredLength: 400
-}));
+const FONT_URL = "./img/font.png";
 
 // check generated GUID's
-console.log(test.GUID);
+// console.log(test.GUID);
+
+var score = null;
 
 (function () {
     var quitState = 0;
@@ -149,63 +60,126 @@ console.log(test.GUID);
 
     function checkQuit() {
         if (dalí.input.keys.isDown('Q')) {
+            console.log("Pressing Q");
             if (quitState == 0) {
                 quitState = 1;
-            }
-        } else {
-            if (quitState == 1) {
-                quitState = 2;
-            }
+            } 
+        } else if (quitState == 1) {
+            quitState = 2;
         }
 
         if (quitState == 2) {
             quitState = 0;
-            gameOver();
+            window.dalí.gameOver();
         }
     }
 
-    window.checkQuit = checkQuit;
-    window.gameOver = gameOver;
+    window.dalí.checkQuit = checkQuit;
+    window.dalí.gameOver = gameOver;
 }());
 
+function init() {
+    var health = new Health(5,5,{
+        fonturl: FONT_URL,
+        desiredLength: 200
+    });
 
-function readHID() {
-    checkQuit();
-    dalí.room.readHID();
-}
+    score = new Score(5,dalí.canvas.height-25,{
+        textRender: {
+            fonturl: FONT_URL,
+            desiredLength: 20
+        },
+        spriteRender: {
+            width: BALL_LENGTH,
+            height: BALL_LENGTH,
+            scaleRatio: BALL_SCALE,
+            spriteurl: BALL_URL
+        }
+    });
 
-function draw() {
-    dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
-    dalí.fg.clearRect(0,0, dalí.canvas.width, dalí.canvas.height);
-    dalí.room.draw();
-    dalí.drawing.draw();
-}
+    var test = new ProxyBot(100,100,health,score,dalí.room.mainCamera);
+    var wall = new Wall(0,0,dalí.canvas.width,25);
 
-function update() {
-    dalí.time.updateDeltaTime();
-    dalí.room.update();
+    var bgObj = new GameObject(0,0);
+
+    var bgTexture = new TextureRenderer(bgObj,{
+        textureurl: STONE_URL,
+        width: dalí.canvas.width,
+        height: dalí.canvas.height,
+        isBackground: true
+    });
+
+    bgObj.gameComponents.push(bgTexture);
+    dalí.room.addObj(bgObj);
+
+    dalí.room.addObj(test);
+
+    var maker = new GameObject(0,0);
+    maker.gameComponents.push(
+        new BallMaker(maker,score,test)
+    );
+    dalí.room.addObj(maker);
+    maker.gameComponents[0].generateBall();
+    maker.gameComponents[0].generateBall();
+    maker.gameComponents[0].generateBall();
+
+    dalí.room.addObj(health);
+
+    dalí.room.addObj(score);
+
+    dalí.room.addObj(wall);
+
+    wall = new Wall(0,0,25,dalí.canvas.height);
+    dalí.room.addObj(wall);
+
+    wall = new Wall(0,dalí.canvas.height - 25,dalí.canvas.width,25);
+    dalí.room.addObj(wall);
+
+    wall = new Wall(dalí.canvas.width-25,0,25,dalí.canvas.height);
+    dalí.room.addObj(wall);
+
+    var text = new GameObject(dalí.canvas.width - 205,5);
+    text.gameComponents.push(new TextRenderer(text,{
+        fonturl: FONT_URL,
+        text: "Ball Game!",
+        desiredLength: 200
+    }));
+
+    dalí.room.addObj(text);
 }
 
 var loop = false;
+var firstLoop = false;
+var firstLoad = true;
 
 function gameLoop() {
     requestAnimationFrame(gameLoop);
 
     if (loop) {
-        dalí.events.emptyQueue();
-        readHID();
-        update();
-        dalí.events.emptyQueue();
-        dalí.room.removeObjects();
-        draw();
-        dalí.physics.checkCollisions(room);
+        dalí.checkQuit();
+        dalí.room.loop();
+    } else if (firstLoop) {
+        dalí.room.deleteLoading();
+        init();
+        loop = true;
+        firstLoop = false;
     } else {
         dalí.resources.updateState();
-        if (dalí.resources.preloaders.imgs.isReady()) {
-            dalí.main.clearRect(0, 0, dalí.canvas.width, dalí.canvas.height);
-            dalí.main.fillStyle = "#000";
-            dalí.main.fillRect(0,0,dalí.canvas.width,dalí.canvas.height);
-            loading.draw();
+        if (dalí.resources.preloaders.isReady()) {
+            if (firstLoad) {
+                    var camera = new Camera();
+                    camera.gameComponents.push(new CameraMover(camera));
+                    dalí.room.addObj(camera);
+                var loading = new GameObject((dalí.canvas.width/2)-200,50);
+                loading.addComp(new TextRenderer(loading,{
+                        fonturl: FONT_URL,
+                        text: "Loading...",
+                        desiredLength: 400
+                }));
+                dalí.room.addLoadingObj(loading);
+                firstLoad = false;
+            }
+            dalí.room.drawLoading();
         }
     }
 }
@@ -229,7 +203,24 @@ if (typeof bgMusic.loop === 'boolean') {
     }, false);
 }
 
+var myAssets = null;
+$.getJSON('./ballgame.json', function(data) { 
+    myAssets=data;
+}); 
+
 bgMusic.addEventListener('canplaythrough', function() { 
    bgMusic.play();
+
+    var room = new Room();
+
+    dalí.room = room;
+
+   dalí.resources.preloaders.load(myAssets.preloadResources);
+
+   dalí.resources.gameloaders.load(myAssets.gameResources);
+
+   dalí.resources.levelloaders.preloaders.load(myAssets.levelPreloadResources);
+
+   dalí.resources.levelloaders.manager.load(myAssets.levelResources);
    gameLoop();
 }, false);

@@ -1,11 +1,3 @@
-var spriteMap = new SpriteMap({
-    width: SPRITE_WIDTH,
-    height: SPRITE_HEIGHT,
-    imageurl: SPRITE_URL,
-    numFrames: NUM_SPRITES,
-    numCols: NUM_SPRITES
-});
-
 // ProxyController
 // ------------------------------------------------------------------------------------
 function ProxyController(go) {
@@ -57,7 +49,7 @@ Health.prototype.updateText = function() {
 
 Health.prototype.makeString = function() {
   if (this.health === 0)
-    return gameOver();
+    return dalí.gameOver();
   this.str = "";
   for (var i = 0; i < this.health; i++) {
     this.str += "X";
@@ -87,7 +79,7 @@ function ProxyBot(x,y,health,score,camera) {
   this.gameComponents.push(new ProxyController(this));
   this.gameComponents.push(new Animation(this,{
     scaleRatio: SPRITE_SCALE,
-    spriteMap: spriteMap,
+    spriteurl: SPRITE_URL,
     numFrames: NUM_SPRITES,
     ticksPerFrame: 1
   }));
