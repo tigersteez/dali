@@ -110,6 +110,8 @@ function init() {
     });
 
     bgObj.gameComponents.push(bgTexture);
+    bgObj.addComp(new GameAudio(bgObj,"./audio/med.wav",true));
+    bgObj.getAudio().play();
     dalí.room.addObj(bgObj);
 
     dalí.room.addObj(test);
@@ -184,32 +186,9 @@ function gameLoop() {
     }
 }
 
-// var backgroundImg = new Image();
-// backgroundImg.src = "./img/brick.png";
-// var bgd = null;
-
-// backgroundImg.onload = function () {
-//     bgd = dalí.main.createPattern(backgroundImg, 'repeat');
-//     gameLoop();
-// };
-
-var bgMusic = new Audio("./audio/med.wav");
-if (typeof bgMusic.loop === 'boolean') {
-    bgMusic.loop = true;
-} else {
-    bgMusic.addEventListener("ended", function() {
-        this.currentTime = 0;
-        this.play();
-    }, false);
-}
-
 var myAssets = null;
 $.getJSON('./ballgame.json', function(data) { 
     myAssets=data;
-}); 
-
-bgMusic.addEventListener('canplaythrough', function() { 
-   bgMusic.play();
 
     var room = new Room();
 
@@ -223,4 +202,4 @@ bgMusic.addEventListener('canplaythrough', function() {
 
    dalí.resources.levelloaders.manager.load(myAssets.levelResources);
    gameLoop();
-}, false);
+});

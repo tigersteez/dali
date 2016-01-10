@@ -59,16 +59,34 @@ function ResourceManager() {
 
     function loadImage(url,loader) {
       var img = new Image();
-      img.loader = loader;
       img.onload = function() {
-          img.loader.resourceCache[url] = img;
-          if(img.loader.isReady()) {
-              for (var i = 0; i < img.loader.readyCallbacks.length; i++) {
-                img.loader.readyCallbacks[i](img.loader.manager);
+          loader.resourceCache[url] = img;
+          if(loader.isReady()) {
+              for (var i = 0; i < loader.readyCallbacks.length; i++) {
+                loader.readyCallbacks[i](loader.manager);
               }
           }
       };
       img.src = url;
+      loader.resourceCache[url] = false;
+    }
+
+    function loadAudio(url,loader) {
+      var req = new XMLHttpRequest();
+      req.open('GET', url, true); // array starts with 0 hence the -1
+      req.responseType = 'arraybuffer';
+      req.onload = function() {
+          dalí.audio.ctx.decodeAudioData(
+              req.response,
+              function(buffer) {
+                  loader.resourceCache[url] = buffer;
+              },
+              function() {
+                  console.log('Error decoding audio "' + url + '".');
+              }
+          );
+      };
+      req.send();
       loader.resourceCache[url] = false;
     }
 
@@ -88,6 +106,7 @@ function ResourceManager() {
     this.fonts = new ResourceLoader(loadFont,this);
     this.sprites = new ResourceLoader(loadSprite,this);
     this.textures = new ResourceLoader(loadTexture,this);
+    this.audio = new ResourceLoader(loadAudio,this);
 
     function notifyManager(manager) {
       manager.textures.load(manager.resources.textures);
@@ -105,17 +124,22 @@ function ResourceManager() {
       this.imgs.onReady(notifyManager);
       this.imgs.load(imgURLs);
     }
+
+    this.loadAudioBuffers = function () {
+      this.audio.load(this.resources.audio);
+    }
 }
 
 ResourceManager.prototype.isReady = function () {
   return (this.imgs.isReady() && this.textures.isReady() &&
-          this.fonts.isReady() && this.sprites.isReady());
+          this.fonts.isReady() && this.sprites.isReady() && this.audio.isReady());
 };
 
 
 ResourceManager.prototype.load = function (resources) {
   this.resources = resources;
   this.loadImgs();
+  this.loadAudioBuffers();
 };
 
 ResourceManager.prototype.toString = function () {
@@ -171,6 +195,13 @@ ResourceManager.prototype.toString = function () {
    window.dalí.resources.levelloaders.preloaders.sprites.get(url);
  }
 
+ function getAudioBuffer(url) {
+      return window.dalí.resources.levelloaders.manager.audio.get(url) || 
+   window.dalí.resources.preloaders.audio.get(url) ||
+   window.dalí.resources.gameloaders.audio.get(url) ||
+   window.dalí.resources.levelloaders.preloaders.audio.get(url);
+ }
+
   // These each should be instances of  ResourceManager which
   // has several resource loaders
   window.dalí.resources = {
@@ -185,7 +216,8 @@ ResourceManager.prototype.toString = function () {
     getImg: getImg,
     getTexture: getTexture,
     getFont: getFont,
-    getSprite: getSprite
+    getSprite: getSprite,
+    getAudioBuffer: getAudioBuffer
   };
 
 } ());
@@ -195,8 +227,4 @@ const SPRITE_URL = "./img/proxyBot.png";
 
 const STONE_URL = "./img/stone_texture.png";
 const BRICK_URL = "./img/brick.png";
-
-// AudioLoader
-// ------------------------------------------------------------------------------------------
-function AudioLoader() {}
 

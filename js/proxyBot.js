@@ -128,11 +128,6 @@ ProxyBot.prototype.ongamecollision = function(eventData) {
     this.health.dec();
     this.score.dec();
     dalí.room.removeObj(otherData.getObjID());
-
-    if (canPlay) {
-      bounceSound.play();
-    }
-
   }
 };
 

@@ -17,7 +17,8 @@
     "sprites": {
         "urls": [],
         "details": {}
-    }
+    },
+    "audio":["./audio/med.wav"]
   },
 
   "gameResources": {
@@ -37,7 +38,8 @@
                 "numCols": 8
             }
         }
-    }
+    },
+    "audio": ["./audio/whoosh.wav"]
   },
 
   "levelPreloadResources": {
@@ -49,7 +51,8 @@
     "sprites": {
         "urls": [],
         "details": {}
-    }
+    },
+    "audio": []
   },
 
   "levelResources": {
@@ -69,6 +72,7 @@
                 "numCols": 1
             }
         }
-    }
+    },
+    "audio": []
   }
 }

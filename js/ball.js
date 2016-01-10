@@ -21,11 +21,6 @@ var bounceSound = new Audio("./audio/whoosh.wav");
 //     }, false);
 // }
 
-bounceSound.loop = false;
-bounceSound.addEventListener('canplaythrough', function() { 
-   canPlay = true;
-}, false);
-
 var scoreboard = document.getElementById("scoreboard");
 
 // Ball
@@ -40,12 +35,25 @@ function Ball(x,y,radius,dx,dy,ax,ay) {
     spriteurl: BALL_URL
   }));
   this.gameComponents.push(new Mover(this,true,dx,dy,ax||1,ay||1));
+  this.addComp(new GameAudio(this,"./audio/whoosh.wav",false));
 }
 
 Ball.prototype.ongamecollision = function(eventData) {
 
   var mover = this.getCollider();
   var collInfo = eventData.collInfo[mover.GUID];
+  var otherGUID = null;
+  if (eventData.GUID1.hashCode() === mover.GUID.hashCode()) {
+     otherGUID = eventData.GUID2; 
+  } else {
+    otherGUID = eventData.GUID1;
+  }
+
+  var otherData = dalí.identifier.getDataFromGUID(otherGUID);
+  if (otherData.objClass.hashCode() === "ProxyBot".hashCode()) {
+    this.getAudio().play();
+  }
+
   if (collInfo.left && mover.velocity.x < 0) {
     mover.velocity.x = -mover.velocity.x;
     mover.acceler.x = -mover.acceler.x;
