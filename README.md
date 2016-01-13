@@ -2,6 +2,13 @@
 **_Javascript framework for making 2D games using HTML5_**
 
 ----
+
+To test locally, install `node-static` using `npm` and run the following command in the repository's top directory:
+
+	$ node staticServer.js
+	
+Then go to `https://localhost:8080`
+
 #### Minigames
   
 **_Ball Game_**
