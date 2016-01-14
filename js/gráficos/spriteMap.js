@@ -9,6 +9,8 @@ function SpriteMap(options) {
   this.width = options.width;
   this.height = options.height;
   this.img = dalí.resources.getImg(options.imgurl);
+  this.offsetX = options.offsetX || 0;
+  this.offsetY = options.offsetY || 0;
 
   this.spriteWidth = this.width / this.numCols;
   this.spriteHeight = this.height / this.numRows;
@@ -19,8 +21,8 @@ SpriteMap.prototype.render = function (i,j,scaleRatio) {
 
   dalí.main.drawImage(
     this.img,
-    j * this.spriteWidth, // column
-    i * this.spriteHeight, // row
+    j * this.spriteWidth + this.offsetY, // column
+    i * this.spriteHeight + this.offsetX, // row
     this.spriteWidth,
     this.spriteHeight,
     0,
@@ -30,8 +32,8 @@ SpriteMap.prototype.render = function (i,j,scaleRatio) {
   );
   dalí.fg.drawImage(
     this.img,
-    j * this.spriteWidth, // column
-    i * this.spriteHeight, // row
+    j * this.spriteWidth + this.offsetY, // column
+    i * this.spriteHeight + this.offsetX, // row
     this.spriteWidth,
     this.spriteHeight,
     0,
@@ -41,13 +43,21 @@ SpriteMap.prototype.render = function (i,j,scaleRatio) {
   );
 };
 
-SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio) {
+SpriteMap.prototype.draw = function(x,y,i,j,scaleRatio,orientation) {
   var cameraPos = dalí.room.mainCamera.getPosition();
   dalí.fg.save();
   dalí.main.save();
   // top left corner
   dalí.fg.translate(x,y);
+  dalí.fg.translate(this.spriteWidth * scaleRatio / 2, this.spriteHeight * scaleRatio / 2);
+  dalí.fg.rotate(orientation);
+  dalí.fg.translate(-this.spriteWidth * scaleRatio / 2, -this.spriteHeight * scaleRatio / 2);
+
   dalí.main.translate(x - cameraPos.x,y - cameraPos.y);
+  dalí.main.translate(this.spriteWidth * scaleRatio / 2, this.spriteHeight * scaleRatio / 2);
+  dalí.main.rotate(orientation);
+  dalí.main.translate(-this.spriteWidth * scaleRatio / 2, -this.spriteHeight * scaleRatio / 2);
+
   this.render(i,j,scaleRatio);
   dalí.fg.restore();
   dalí.main.restore();
@@ -70,9 +80,9 @@ function FontMap(options) {
   };
 }
 
-FontMap.prototype.draw = function (x,y,char,scaleRatio) {
+FontMap.prototype.draw = function (x,y,char,scaleRatio,orientation) {
   var ij = this.getMapIndices(this.mapCharToIdx(char));
-  SpriteMap.prototype.draw.call(this,x,y,ij.i,ij.j,scaleRatio);
+  SpriteMap.prototype.draw.call(this,x,y,ij.i,ij.j,scaleRatio,orientation);
 };
 
 dalí.extend(SpriteMap,FontMap);

@@ -6,12 +6,26 @@ const max_a = 2;
 const MIN_R = 3;
 const MAX_R = 10;
 
+const MIN_O = 12;
+const MAX_O = 36;
+
 const BALL_LENGTH = 216;
 const BALL_SCALE = 0.05;
 
+function Rotator(go,speed) {
+  GameComponent.call(this,go);
+  this.speed = speed;
+}
+
+Rotator.prototype.update = function() {
+  this.gameObj.transform.orientation += this.speed * dalí.time.getDeltaTime();
+};
+
+dalí.extend(GameComponent, Rotator);
+
 // Ball
 // ------------------------------------------------------------------------------------
-function Ball(x,y,radius,dx,dy,ax,ay) {
+function Ball(x,y,radius,dx,dy,ax,ay,rotation) {
   GameObject.call(this,x,y);
   EventHandler.call(this,[dalí.physics.collisionEvent],this.GUID);
   this.gameComponents.push(new SpriteRenderer(this,{
@@ -22,6 +36,7 @@ function Ball(x,y,radius,dx,dy,ax,ay) {
   }));
   this.gameComponents.push(new Mover(this,true,dx,dy,ax||1,ay||1));
   this.addComp(new GameAudio(this,"./audio/whoosh.wav",false));
+  this.addComp(new Rotator(this,rotation||16));
 }
 
 Ball.prototype.ongamecollision = function(eventData) {
@@ -116,7 +131,7 @@ const SPRITE_SCALE = 0.1;
 
 const proxy_width = SPRITE_WIDTH  * SPRITE_SCALE / NUM_SPRITES;
 const proxy_height = SPRITE_HEIGHT* SPRITE_SCALE;
-const cushion = 7;
+const cushion = 100;
 
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
@@ -156,8 +171,8 @@ BallMaker.prototype.generateBall = function() {
     new Ball(x, y, //x.y
       getRandomInt(MIN_R,MAX_R), //r
       getRandomInt(-max_dx,max_dx),getRandomInt(-max_dy,max_dy), // v
-      getRandomInt(-max_a,max_a),getRandomInt(-max_a,max_a) // a
-      )
+      getRandomInt(-max_a,max_a),getRandomInt(-max_a,max_a), // a
+      getRandomInt(MIN_O,MAX_O))
   );
 }
 

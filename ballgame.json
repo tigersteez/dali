@@ -15,8 +15,19 @@
         }
     },
     "sprites": {
-        "urls": [],
-        "details": {}
+        "urls": ["./img/topdown-sheet3.png"],
+        "details": {
+          "./img/topdown-sheet3.png": {
+                "width": 1024,
+                "height": 468,
+                "imgurl": "./img/topdown-sheet3.png",
+                "numFrames": 28,
+                "numCols": 7,
+                "numRows": 4,
+                "offsetX": 0,
+                "offsetY": 0
+          }
+        }
     },
     "audio":["./audio/med.wav"]
   },

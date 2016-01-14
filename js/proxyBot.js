@@ -70,6 +70,8 @@ Health.prototype.dec = function (amt) {
 
 dalí.extend(UI_Element, Health);
 
+
+
 // ProxyBot
 // ------------------------------------------------------------------------------------
 function ProxyBot(x,y,health,score,camera) {
@@ -81,8 +83,18 @@ function ProxyBot(x,y,health,score,camera) {
     scaleRatio: SPRITE_SCALE,
     spriteurl: SPRITE_URL,
     numFrames: NUM_SPRITES,
-    ticksPerFrame: 1
+    ticksPerFrame: 32
   }));
+
+
+  // this.gameComponents.push(new Animation(this,{
+  //   scaleRatio: 0.5,
+  //   spriteurl: "./img/topdown-sheet3.png",
+  //   numFrames: 28,
+  //   ticksPerFrame: 16
+  // }));
+
+
   this.health = health;
   this.score = score;
 

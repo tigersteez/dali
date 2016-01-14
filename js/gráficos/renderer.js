@@ -103,7 +103,7 @@ SpriteRenderer.prototype.render = function () {
     var idx = this.getMapIndices();
     this.spriteMap.draw(this.gameObj.getX(),this.gameObj.getY(), // x,y
         idx.i, idx.j, // i,j
-        this.scaleRatio); // scale
+        this.scaleRatio, this.gameObj.transform.orientation); // scale
 };
 
 dalí.extend(Renderer, SpriteRenderer);
@@ -207,7 +207,7 @@ TextRenderer.prototype.render = function () {
         this.font.draw(this.gameObj.getX() + this.font.spriteWidth * this.scaleRatio * i, // x
           this.gameObj.getY(), // y
           this.text.charAt(i), // i,j
-          this.scaleRatio); // scale
+          this.scaleRatio, this.gameObj.transform.orientation); // scale
     }
 
 };

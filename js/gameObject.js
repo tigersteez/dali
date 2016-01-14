@@ -25,7 +25,7 @@ function GameObject (x,y) {
   this.gameComponents = new Array();
   this.transform = {
     position: new Vector(x,y),
-    rotation: 0
+    orientation: 0 // radians
   };
 }
 
